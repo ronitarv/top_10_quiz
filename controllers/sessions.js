@@ -60,6 +60,21 @@ sessions_router.put("/:id", async (request, response) => {
   if (!(user.id.toString() === session.user.toString())) {
     return response.status(401).json({error: "invalid token"});
   }
+  const saved_session = await Session.findByIdAndUpdate(request.params.id, request.body).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1});
+
+  //const saved_session = await session.save();
+  response.status(200).json(saved_session);
+});
+
+sessions_router.put("/:id", async (request, response) => {
+  const user = request.user;
+  if (!user) {
+    return response.status(401).json({error: "invalid token"});
+  }
+  const session = await Session.findById(request.params.id);
+  if (!(user.id.toString() === session.user.toString())) {
+    return response.status(401).json({error: "invalid token"});
+  }
   session.answers = request.params.answers;
   const saved_session = await session.save();
   response.status(200).json(await saved_session.populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));

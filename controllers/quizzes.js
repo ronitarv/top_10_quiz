@@ -2,8 +2,13 @@ const quizzes_router = require("express").Router();
 const Quiz = require("../models/quiz");
 
 quizzes_router.get("/", async (request, response) => {
-  const quizzes = await Quiz.find({}).populate("user", {username: 1, name: 1});
-  response.json(quizzes);
+  if (request.user) {
+    const quizzes = await Quiz.find({}).populate("user", {username: 1, name: 1});
+    response.json(quizzes);
+  } else {
+    const quizzes = await Quiz.find({}, {answers: 0}).populate("user", {username: 1, name: 1});
+    response.json(quizzes);
+  }
 });
 
 quizzes_router.post("/", async (request, response) => {

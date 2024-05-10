@@ -4,7 +4,8 @@ const unique_validator = require("mongoose-unique-validator");
 const session_schema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   answers: {
     type: Array,

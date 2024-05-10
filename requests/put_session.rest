@@ -1,0 +1,5 @@
+PUT http://localhost:3000/api/sessions/663d0d6216dfeb57fb9b1091
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphcmwiLCJpZCI6IjY2M2NmNjM2M2M5ZWUwZTg3MWY5ZDMxZiIsImlhdCI6MTcxNTI3Mjg2M30.ZVU_3FWWw_Zth4LZgJ87kW-ulMZTvFpyg0JldkpMeZ0
+
+{"name":"session 2","answers":["?","?","?","?","?","?","?","?","?","?"],"quiz":"663cf6363c9ee0e871f9d31f","id":"663d0d6216dfeb57fb9b1091"}
