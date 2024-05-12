@@ -27,7 +27,6 @@ sessions_router.post("/", async (request, response) => {
   }
   const session = new Session({...request.body, user: user._id});
   const saved_session = await session.save();
-  console.log("saved session", saved_session);
   response.status(201).json(await saved_session.populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));
 });
 
@@ -60,9 +59,8 @@ sessions_router.put("/:id", async (request, response) => {
   if (!(user.id.toString() === session.user.toString())) {
     return response.status(401).json({error: "invalid token"});
   }
-  const saved_session = await Session.findByIdAndUpdate(request.params.id, request.body).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1});
+  const saved_session = await Session.findByIdAndUpdate(request.params.id, request.body, {new: true}).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1});
 
-  //const saved_session = await session.save();
   response.status(200).json(saved_session);
 });
 

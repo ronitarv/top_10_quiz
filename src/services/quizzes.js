@@ -8,7 +8,11 @@ const user_url = "api/user";
 let token = null;
 
 const set_token = new_token => {
-  token = `Bearer ${new_token}`;
+  if (new_token) {
+    token = `Bearer ${new_token}`;
+  } else {
+    token = new_token;
+  }
 };
 
 const get_quizzes = async () => {
@@ -64,14 +68,16 @@ const delete_session = async id => {
   return req.status;
 };
 
-const update_session = async (id, session_data) => {
+const update_session = async (session_data) => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.put(`${session_url}/${id}`, {
+  const user_id = session_data.user ? session_data.user.id : null;
+  const quiz_id = session_data.quiz ? session_data.quiz.id : null;
+  const req = await axios.put(`${session_url}/${session_data.id}`, {
     ...session_data,
-    user: session_data.user.id,
-    quiz: session_data.quiz.id
+    user: user_id,
+    quiz: quiz_id
   }, config);
   return req.data;
 };

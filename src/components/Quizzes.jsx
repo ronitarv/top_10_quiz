@@ -1,30 +1,23 @@
-import {useState, useEffect} from "react";
-import quiz_service from "../services/quizzes";
+import {Link} from "react-router-dom";
 
-const Quizzes = () => {
-  const [quizzes, set_quizzes] = useState([]);
-
-  useEffect(() => {
-    quiz_service.get_quizzes()
-      .then(quizzes => {
-        set_quizzes(quizzes);
-      });
-  }, []);
+const Quizzes = ({quizzes, handle_select}) => {
 
   return (
     <div>
       <h1>quizzes</h1>
+      <Link to={"/quizzes/create"}><button>Create new</button></Link>
       <ul>
         {quizzes.map(quiz => (
           <li key={quiz.question}>
             <div>{quiz.question}</div>
             <ul></ul>
             {quiz.answers &&
-            <ul>
+            <ol>
               {quiz.answers.map(answer => (
                 <li key={answer}>{answer}</li>
               ))}
-            </ul>}
+            </ol>}
+            {handle_select && <button onClick={() => handle_select(quiz)}>Select</button>}
           </li>
         ))}
       </ul>
