@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
-import Login from "./components/Login";
+import SignIn from "./components/SignIn";
 import Quizzes from "./components/Quizzes";
 import QuizCreate from "./components/QuizCreate";
 import Sessions from "./components/Sessions";
@@ -51,19 +51,44 @@ const App = () => {
     window.localStorage.removeItem("top_10_quiz_app_user");
   };
 
+  const delete_session = (session) => {
+    if (window.confirm(`Are you sure you want to remove the session: ${session.name}`)) {
+      quiz_service.delete_session(session.id).then(() => {
+        set_sessions(sessions.filter(s => s.id !== session.id));
+      });
+    }
+  };
+
+  const delete_quiz = (quiz) => {
+    if (window.confirm(`Are you sure you want to remove the quiz: ${quiz.question}`)) {
+      quiz_service.delete_quiz(quiz.id).then(() => {
+        set_quizzes(quizzes.filter(q => q.id !== quiz.id));
+      });
+    }
+  };
+
+  const delete_user = () => {
+    if (window.confirm(`Are you sure you want to PERMANENTLY remove your user: ${user.username}`)) {
+      quiz_service.delete_user(user.id).then(() => {
+        handle_logout();
+      });
+    }
+  };
+
   return (
     <Router>
       <div>
         <Link to="/">Sessions</Link>
-        <Link to="/quizzes">Quizzes</Link>
-        {user ? <span><em>{user.username} logged in</em> <button onClick={handle_logout}>logout</button></span> : <Link to="/login">Login</Link>}
+        {user && <Link to="/quizzes">Quizzes</Link>}
+        {user ? <span><em>{user.username} logged in</em> <button onClick={handle_logout}>logout</button></span> : <Link to="/sign_in">sign in</Link>}
+        {user && <button onClick={delete_user}>Delete user</button>}
       </div>
       <Routes>
-        <Route path="/" element={<Sessions sessions={sessions} set_sessions={set_sessions}/>} />
-        <Route path="/sessions/:id" element={<Session quizzes={quizzes} user={user}/>} />
-        <Route path="/quizzes" element={<Quizzes quizzes={quizzes}/>} />
-        <Route path="/quizzes/create" element={<QuizCreate quizzes={quizzes} set_quizzes={set_quizzes}/>} />
-        <Route path="/login" element={<Login handle_login={handle_login}/>} />
+        <Route path="/" element={<Sessions sessions={sessions} set_sessions={set_sessions} user={user} delete_session={delete_session}/>} />
+        <Route path="/sessions/:id" element={<Session quizzes={quizzes} user={user} delete_session={delete_session}/>} />
+        {user && <Route path="/quizzes" element={<Quizzes quizzes={quizzes} user={user} delete_quiz={delete_quiz}/>} />}
+        {user && <Route path="/quizzes/create" element={<QuizCreate quizzes={quizzes} set_quizzes={set_quizzes}/>} />}
+        <Route path="/sign_in" element={<SignIn handle_login={handle_login}/>} />
       </Routes>
     </Router>
   );

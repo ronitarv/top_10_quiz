@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import quiz_service from "../services/quizzes";
 import Quizzes from "./Quizzes";
 
@@ -7,35 +7,24 @@ function useInterval(callback, delay) {
   const intervalRef = useRef();
   const callbackRef = useRef(callback);
 
-  // Remember the latest callback:
-  //
-  // Without this, if you change the callback, when setInterval ticks again, it
-  // will still call your old callback.
-  //
-  // If you add `callback` to useEffect's deps, it will work fine but the
-  // interval will be reset.
-
   useEffect(() => {
     callbackRef.current = callback;
   }, [callback]);
-
-  // Set up the interval:
 
   useEffect(() => {
     if (typeof delay === "number") {
       intervalRef.current = window.setInterval(() => callbackRef.current(), delay);
 
-      // Clear interval if the components is unmounted or the delay changes:
       return () => window.clearInterval(intervalRef.current);
     }
   }, [delay]);
 
-  // Returns a ref to the interval ID in case you want to clear it manually:
   return intervalRef;
 }
 
 
-const Session = ({quizzes, user}) => {
+const Session = ({quizzes, user, delete_session}) => {
+  const navigate = useNavigate();
   const [session, set_session] = useState(null);
 
   const id = useParams().id;
@@ -47,7 +36,7 @@ const Session = ({quizzes, user}) => {
       }, []);
   }, []);
 
-  const intervalRef = useInterval(() => {
+  useInterval(() => {
     if (session && (!user || session.user.id !== user.id)) {
       console.log("poll sent");
       quiz_service.get_session(id)
@@ -56,29 +45,7 @@ const Session = ({quizzes, user}) => {
           set_session(s);
         });
     }
-    // } else {
-    //   window.clearInterval(intervalRef.current);
-    // }
   }, 5000);
-
-  // useEffect(() => {
-  //   console.log("user session", user, session);
-  //   if (!user || user.id !== session.user.id) {
-  //     const interval = setInterval(() => {
-  //       console.log("poll sent");
-  //       quiz_service.get_session(id)
-  //         .then(session => {
-  //           console.log("poll received");
-  //           set_session(session);
-  //         });
-  //     }, 5000);
-  //     return () => clearInterval(interval);
-  //   }
-  // });
-
-  // useEffect(() => {
-
-  // }, []);
 
   const handle_reveal = (answer, index) => {
     const new_session = {...session};
@@ -101,6 +68,11 @@ const Session = ({quizzes, user}) => {
       });
   };
 
+  const on_session_delete = () => {
+    delete_session(session);
+    navigate("/");
+  };
+
   if (!session) {
     return (
       <div>loading...</div>
@@ -108,9 +80,15 @@ const Session = ({quizzes, user}) => {
   }
 
   if (!session.quiz) {
-    return (
-      <Quizzes quizzes={quizzes} handle_select={handle_quiz_select} />
-    );
+    if (user && session.user.id === user.id) {
+      return (
+        <Quizzes quizzes={quizzes} handle_select={handle_quiz_select} user={user}/>
+      );
+    } else {
+      return (
+        <div>changing quiz</div>
+      );
+    }
   }
 
   return (
@@ -130,7 +108,7 @@ const Session = ({quizzes, user}) => {
               <li key={index}><button onClick={() => handle_reveal(answer, index)}>{answer}</button></li>
             ))}
           </ol>
-          <button onClick={handle_change}>Change Quiz</button>
+          <button onClick={handle_change}>Change Quiz</button><button onClick={on_session_delete}>Delete session</button>
         </div>
       }
     </div>

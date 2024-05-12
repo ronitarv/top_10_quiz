@@ -65,7 +65,7 @@ const delete_session = async id => {
     headers: {Authorization: token}
   };
   const req = await axios.delete(`${session_url}/${id}`, config);
-  return req.status;
+  return req;
 };
 
 const update_session = async (session_data) => {
@@ -87,6 +87,14 @@ const create_user = async credentials => {
   return req.data;
 };
 
+const delete_user = async id => {
+  const config = {
+    headers: {Authorization: token}
+  };
+  const req = await axios.delete(`${user_url}/${id}`, config);
+  return req;
+};
+
 const login = async credentials => {
   const req = await axios.post(login_url, credentials);
   return req.data;
@@ -95,5 +103,5 @@ const login = async credentials => {
 export default {
   set_token, get_quizzes, create_quiz, delete_quiz,
   get_sessions, get_session, create_session, delete_session,
-  update_session, create_user, login
+  update_session, create_user, delete_user, login
 };
