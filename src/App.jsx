@@ -1,96 +1,143 @@
-import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
+import {Routes, Route, Link} from "react-router-dom";
 import SignIn from "./components/SignIn";
 import Quizzes from "./components/Quizzes";
 import QuizCreate from "./components/QuizCreate";
 import Sessions from "./components/Sessions";
 import Session from "./components/Session";
-import quiz_service from "./services/quizzes";
+import RoleSelect from "./components/RoleSelect";
+import quizService from "./services/quizzes";
 import {useState, useEffect} from "react";
+import {ReactNotifications} from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+//import "./css/Notification.css";
+import {errorNotification, successNotification} from "./utils/helper";
+import {Store} from "react-notifications-component";
 
 const App = () => {
 
-  const [user, set_user] = useState(null);
-  const [sessions, set_sessions] = useState([]);
-  const [quizzes, set_quizzes] = useState([]);
+  const [user, setUser] = useState(null);
+  const [sessions, setSessions] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
+  const [role, setRole] = useState(null);
+
+  // Store.addNotification({
+  //   title: "Wonderful!",
+  //   message: "teodosii@react-notifications-component",
+  //   type: "success",
+  //   insert: "top",
+  //   container: "top-right",
+  //   animationIn: ["animate__animated", "animate__fadeIn"],
+  //   animationOut: ["animate__animated", "animate__fadeOut"],
+  //   dismiss: {
+  //     duration: 5000,
+  //     onScreen: true
+  //   }
+  // });
 
   useEffect(() => {
-    quiz_service.get_quizzes()
+    quizService.getQuizzes()
       .then(quizzes => {
-        set_quizzes(quizzes);
+        setQuizzes(quizzes);
       });
   }, [user]);
 
   useEffect(() => {
-    quiz_service.get_sessions()
+    quizService.getSessions()
       .then(sessions => {
-        set_sessions(sessions);
+        setSessions(sessions);
       });
   }, [user]);
 
+  const handleSetRole = (role) => {
+    setRole(role);
+    window.localStorage.setItem("top10QuizAppRole", JSON.stringify(role));
+  };
+
   useEffect(() => {
-    const user_json = window.localStorage.getItem("top_10_quiz_app_user");
-    if (user_json) {
-      const user = JSON.parse(user_json);
-      set_user(user);
-      quiz_service.set_token(user.token);
+    const userJson = window.localStorage.getItem("top10QuizAppUser");
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      setUser(user);
+      quizService.setToken(user.token);
+    }
+    const roleJson = window.localStorage.getItem("top10QuizAppRole");
+    if (roleJson) {
+      const role = JSON.parse(roleJson);
+      setRole(role);
     }
   }, []);
 
-  const handle_login = async (username, password) => {
-    const user = await quiz_service.login({username, password});
-    if (user && user.token) {
-      set_user(user);
-      quiz_service.set_token(user.token);
-      window.localStorage.setItem("top_10_quiz_app_user", JSON.stringify(user));
+  const handleLogin = async (username, password) => {
+    try {
+      const user = await quizService.login({username, password});
+      if (user && user.token) {
+        setUser(user);
+        quizService.setToken(user.token);
+        window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
+      }
+      return true;
+    } catch (error) {
+      Store.addNotification(errorNotification("Login", "Wrong credentials"));
+      return false;
     }
   };
 
-  const handle_logout = () => {
-    set_user(null);
-    quiz_service.set_token(null);
-    window.localStorage.removeItem("top_10_quiz_app_user");
+  const handleLogout = () => {
+    setUser(null);
+    quizService.setToken(null);
+    window.localStorage.removeItem("top10QuizAppUser");
   };
 
-  const delete_session = (session) => {
+  const deleteSession = (session) => {
     if (window.confirm(`Are you sure you want to remove the session: ${session.name}`)) {
-      quiz_service.delete_session(session.id).then(() => {
-        set_sessions(sessions.filter(s => s.id !== session.id));
+      quizService.deleteSession(session.id).then(() => {
+        setSessions(sessions.filter(s => s.id !== session.id));
       });
+      return true;
     }
   };
 
-  const delete_quiz = (quiz) => {
+  const deleteQuiz = (quiz) => {
     if (window.confirm(`Are you sure you want to remove the quiz: ${quiz.question}`)) {
-      quiz_service.delete_quiz(quiz.id).then(() => {
-        set_quizzes(quizzes.filter(q => q.id !== quiz.id));
+      quizService.deleteQuiz(quiz.id).then(() => {
+        setQuizzes(quizzes.filter(q => q.id !== quiz.id));
       });
     }
   };
 
-  const delete_user = () => {
+  const deleteUser = () => {
     if (window.confirm(`Are you sure you want to PERMANENTLY remove your user: ${user.username}`)) {
-      quiz_service.delete_user(user.id).then(() => {
-        handle_logout();
+      quizService.deleteUser(user.id).then(() => {
+        handleLogout();
       });
     }
   };
+
+  if (!role) {
+    return (
+      <RoleSelect handleSetRole={handleSetRole} user={user} />
+    );
+  }
 
   return (
-    <Router>
+    <div>
+      <ReactNotifications />
       <div>
-        <Link to="/">Sessions</Link>
-        {user && <Link to="/quizzes">Quizzes</Link>}
-        {user ? <span><em>{user.username} logged in</em> <button onClick={handle_logout}>logout</button></span> : <Link to="/sign_in">sign in</Link>}
-        {user && <button onClick={delete_user}>Delete user</button>}
+        <Link to="/">Start</Link>
+        <Link to="/sessions">Sessions</Link>
+        {role === "host" && user && <Link to="/quizzes">Quizzes</Link>}
+        {role === "host" && (user ? <span><em>{user.username} logged in</em> <button onClick={handleLogout}>logout</button></span> : <Link to="/signin">sign in</Link>)}
+        {role === "host" && user && <button onClick={deleteUser}>Delete user</button>}
       </div>
       <Routes>
-        <Route path="/" element={<Sessions sessions={sessions} set_sessions={set_sessions} user={user} delete_session={delete_session}/>} />
-        <Route path="/sessions/:id" element={<Session quizzes={quizzes} user={user} delete_session={delete_session}/>} />
-        {user && <Route path="/quizzes" element={<Quizzes quizzes={quizzes} user={user} delete_quiz={delete_quiz}/>} />}
-        {user && <Route path="/quizzes/create" element={<QuizCreate quizzes={quizzes} set_quizzes={set_quizzes}/>} />}
-        <Route path="/sign_in" element={<SignIn handle_login={handle_login}/>} />
+        <Route path="/" element={<RoleSelect handleSetRole={handleSetRole} user={user} />} />
+        <Route path="/sessions" element={<Sessions sessions={sessions} setSessions={setSessions} user={user} role={role} deleteSession={deleteSession}/>} />
+        <Route path="/sessions/:id" element={<Session quizzes={quizzes} user={user} role={role} deleteSession={deleteSession}/>} />
+        {role === "host" && user && <Route path="/quizzes" element={<Quizzes quizzes={quizzes} user={user} deleteQuiz={deleteQuiz}/>} />}
+        {role === "host" && user && <Route path="/quizzes/create" element={<QuizCreate quizzes={quizzes} setQuizzes={setQuizzes}/>} />}
+        {role === "host" && <Route path="/signin" element={<SignIn handleLogin={handleLogin}/>} />}
       </Routes>
-    </Router>
+    </div>
   );
 };
 

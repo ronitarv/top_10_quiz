@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const unique_validator = require("mongoose-unique-validator");
+const uniqueValidator = require("mongoose-unique-validator");
 
-const session_schema = new mongoose.Schema({
+const sessionSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -20,14 +20,14 @@ const session_schema = new mongoose.Schema({
     ref: "User"
   }
 });
-session_schema.plugin(unique_validator);
-session_schema.set("toJSON", {
-  transform: (document, returned_object) => {
-    returned_object.id = returned_object._id.toString();
-    delete returned_object._id;
-    delete returned_object.__v;
-    delete returned_object.password_hash;
+sessionSchema.plugin(uniqueValidator);
+sessionSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+    delete returnedObject.passwordHash;
   }
 });
 
-module.exports = mongoose.model("Session" ,session_schema);
+module.exports = mongoose.model("Session" ,sessionSchema);

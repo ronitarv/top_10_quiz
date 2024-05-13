@@ -1,7 +1,7 @@
-const quizzes_router = require("express").Router();
+const quizzesRouter = require("express").Router();
 const Quiz = require("../models/quiz");
 
-quizzes_router.get("/", async (request, response) => {
+quizzesRouter.get("/", async (request, response) => {
   if (request.user) {
     const quizzes = await Quiz.find({}).populate("user", {username: 1, name: 1});
     response.json(quizzes);
@@ -11,19 +11,19 @@ quizzes_router.get("/", async (request, response) => {
   }
 });
 
-quizzes_router.post("/", async (request, response) => {
+quizzesRouter.post("/", async (request, response) => {
   const user = request.user;
   if (!user) {
     return response.status(401).json({error: "invalid token"});
   }
   const quiz = new Quiz({...request.body, user: user._id});
-  const saved_quiz = await quiz.save();
-  user.blogs = user.quizzes.concat(saved_quiz._id);
+  const savedQuiz = await quiz.save();
+  user.blogs = user.quizzes.concat(savedQuiz._id);
   await user.save();
-  response.status(201).json(await saved_quiz.populate("user", {username: 1, name: 1}));
+  response.status(201).json(await savedQuiz.populate("user", {username: 1, name: 1}));
 });
 
-quizzes_router.delete("/:id", async (request, response) => {
+quizzesRouter.delete("/:id", async (request, response) => {
   try {
     const user = request.user;
     if (!user) {
@@ -43,4 +43,4 @@ quizzes_router.delete("/:id", async (request, response) => {
   }
 });
 
-module.exports = quizzes_router;
+module.exports = quizzesRouter;

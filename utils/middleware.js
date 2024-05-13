@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const user_extractor = async (request, response, next) => {
+const userExtractor = async (request, response, next) => {
   const authorization = request.get("authorization");
   if (authorization && authorization.startsWith("Bearer ")) {
     const token = authorization.replace("Bearer ", "");
-    const decoded_token = jwt.verify(token, process.env.SECRET);
-    if (!decoded_token.id) {
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if (!decodedToken.id) {
       request.user = null;
     }
-    const user = await User.findById(decoded_token.id);
+    const user = await User.findById(decodedToken.id);
     request.user = user;
   } else {
     request.user = null;
@@ -17,7 +17,7 @@ const user_extractor = async (request, response, next) => {
   next();
 };
 
-const error_handler = (error, request, response, next) => {
+const errorHandler = (error, request, response, next) => {
   if (error.name === "CastError") {
     return response.status(400).send({error: "malformatted id"});
   } else if (error.name === "ValidationError") {
@@ -29,5 +29,5 @@ const error_handler = (error, request, response, next) => {
 };
 
 module.exports = {
-  error_handler, user_extractor
+  errorHandler, userExtractor
 };

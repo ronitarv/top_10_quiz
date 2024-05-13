@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 
-const Quizzes = ({quizzes, handle_select, user, delete_quiz}) => {
+const Quizzes = ({quizzes, handleSelect, user, deleteQuiz}) => {
 
   return (
     <div>
@@ -18,8 +18,8 @@ const Quizzes = ({quizzes, handle_select, user, delete_quiz}) => {
                 <li key={answer}>{answer}</li>
               ))}
             </ol>}
-            {handle_select && <button onClick={() => handle_select(quiz)}>Select</button>}
-            <button onClick={() => delete_quiz(quiz)}>remove</button>
+            {handleSelect && <button onClick={() => handleSelect(quiz)}>Select</button>}
+            <button onClick={() => deleteQuiz(quiz)}>remove</button>
           </li>
         ))}
       </ul>
@@ -35,7 +35,7 @@ const Quizzes = ({quizzes, handle_select, user, delete_quiz}) => {
                 <li key={answer}>{answer}</li>
               ))}
             </ol>}
-            {handle_select && <button onClick={() => handle_select(quiz)}>Select</button>}
+            {handleSelect && <button onClick={() => handleSelect(quiz)}>Select</button>}
           </li>
         ))}
       </ul>

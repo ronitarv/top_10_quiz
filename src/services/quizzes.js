@@ -1,107 +1,107 @@
 import axios from "axios";
 
-const quiz_url = "/api/quizzes";
-const session_url = "/api/sessions";
-const login_url = "/api/login";
-const user_url = "api/user";
+const quizUrl = "/api/quizzes";
+const sessionUrl = "/api/sessions";
+const loginUrl = "/api/login";
+const userUrl = "api/user";
 
 let token = null;
 
-const set_token = new_token => {
-  if (new_token) {
-    token = `Bearer ${new_token}`;
+const setToken = newToken => {
+  if (newToken) {
+    token = `Bearer ${newToken}`;
   } else {
-    token = new_token;
+    token = newToken;
   }
 };
 
-const get_quizzes = async () => {
+const getQuizzes = async () => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.get(quiz_url, config);
+  const req = await axios.get(quizUrl, config);
   return req.data;
 };
 
-const create_quiz = async quiz_data => {
+const createQuiz = async quizData => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.post(quiz_url, quiz_data, config);
+  const req = await axios.post(quizUrl, quizData, config);
   return req.data;
 };
 
-const delete_quiz = async id => {
+const deleteQuiz = async id => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.delete(`${quiz_url}/${id}`, config);
+  const req = await axios.delete(`${quizUrl}/${id}`, config);
   return req.status;
 };
 
-const get_sessions = async () => {
-  const req = await axios.get(session_url);
+const getSessions = async () => {
+  const req = await axios.get(sessionUrl);
   return req.data;
 };
 
-const get_session = async id => {
+const getSession = async id => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.get(`${session_url}/${id}`, config);
+  const req = await axios.get(`${sessionUrl}/${id}`, config);
   return req.data;
 };
 
-const create_session = async session_data => {
+const createSession = async sessionData => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.post(session_url, session_data, config);
+  const req = await axios.post(sessionUrl, sessionData, config);
   return req.data;
 };
 
-const delete_session = async id => {
+const deleteSession = async id => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.delete(`${session_url}/${id}`, config);
+  const req = await axios.delete(`${sessionUrl}/${id}`, config);
   return req;
 };
 
-const update_session = async (session_data) => {
+const updateSession = async (sessionData) => {
   const config = {
     headers: {Authorization: token}
   };
-  const user_id = session_data.user ? session_data.user.id : null;
-  const quiz_id = session_data.quiz ? session_data.quiz.id : null;
-  const req = await axios.put(`${session_url}/${session_data.id}`, {
-    ...session_data,
-    user: user_id,
-    quiz: quiz_id
+  const userId = sessionData.user ? sessionData.user.id : null;
+  const quizId = sessionData.quiz ? sessionData.quiz.id : null;
+  const req = await axios.put(`${sessionUrl}/${sessionData.id}`, {
+    ...sessionData,
+    user: userId,
+    quiz: quizId
   }, config);
   return req.data;
 };
 
-const create_user = async credentials => {
-  const req = await axios.post(user_url, credentials);
+const createUser = async credentials => {
+  const req = await axios.post(userUrl, credentials);
   return req.data;
 };
 
-const delete_user = async id => {
+const deleteUser = async id => {
   const config = {
     headers: {Authorization: token}
   };
-  const req = await axios.delete(`${user_url}/${id}`, config);
+  const req = await axios.delete(`${userUrl}/${id}`, config);
   return req;
 };
 
 const login = async credentials => {
-  const req = await axios.post(login_url, credentials);
+  const req = await axios.post(loginUrl, credentials);
   return req.data;
 };
 
 export default {
-  set_token, get_quizzes, create_quiz, delete_quiz,
-  get_sessions, get_session, create_session, delete_session,
-  update_session, create_user, delete_user, login
+  setToken, getQuizzes, createQuiz, deleteQuiz,
+  getSessions, getSession, createSession, deleteSession,
+  updateSession, createUser, deleteUser, login
 };

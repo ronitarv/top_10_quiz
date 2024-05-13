@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const quiz_schema = new mongoose.Schema({
+const quizSchema = new mongoose.Schema({
   question: {
     type: String,
     required: true,
@@ -16,12 +16,12 @@ const quiz_schema = new mongoose.Schema({
   }
 });
 
-quiz_schema.set("toJSON", {
-  transform: (document, returned_object) => {
-    returned_object.id = returned_object._id.toString();
-    delete returned_object._id;
-    delete returned_object.__v;
+quizSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   }
 });
 
-module.exports = mongoose.model("Quiz", quiz_schema);
+module.exports = mongoose.model("Quiz", quizSchema);

@@ -1,14 +1,14 @@
 const bcrypt = require("bcrypt");
-const user_router = require("express").Router();
+const userRouter = require("express").Router();
 const User = require("../models/user");
 
-user_router.post("/", async (request, response) => {
+userRouter.post("/", async (request, response) => {
   const {username, name, password} = request.body;
   if (!(password && password.length >= 3)) {
     return response.status(400).json({error: "password must be at least 3 characters long"});
   }
-  const salt_rounds = 10;
-  const password_hash = await bcrypt.hash(password, salt_rounds);
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
 
 
   User.init()
@@ -16,17 +16,17 @@ user_router.post("/", async (request, response) => {
       const user = new User({
         username,
         name,
-        password_hash,
+        passwordHash,
       });
-      const saved_user = await user.save();
-      response.status(201).json(saved_user);
+      const savedUser = await user.save();
+      response.status(201).json(savedUser);
     })
     .catch((error) => {
       response.status(400).json({error: error.message});
     });
 });
 
-user_router.delete("/:id", async (request, response) => {
+userRouter.delete("/:id", async (request, response) => {
   const user = request.user;
   if (!(user.id.toString() === request.params.id)) {
     return response.status(401).json({error: "invalid token"});
@@ -35,4 +35,4 @@ user_router.delete("/:id", async (request, response) => {
   return response.status(204).end();
 });
 
-module.exports = user_router;
+module.exports = userRouter;

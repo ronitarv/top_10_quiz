@@ -1,12 +1,12 @@
-const sessions_router = require("express").Router();
+const sessionsRouter = require("express").Router();
 const Session = require("../models/session");
 
-sessions_router.get("/", async (request, response) => {
+sessionsRouter.get("/", async (request, response) => {
   const sessions = await Session.find({}).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1});
   response.json(sessions);
 });
 
-sessions_router.get("/:id", async (request, response) => {
+sessionsRouter.get("/:id", async (request, response) => {
   const user = request.user;
   const session = await Session.findById(request.params.id);
   //response.json(await Session.findById(request.params.id).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1})).end();
@@ -20,17 +20,17 @@ sessions_router.get("/:id", async (request, response) => {
   }
 });
 
-sessions_router.post("/", async (request, response) => {
+sessionsRouter.post("/", async (request, response) => {
   const user = request.user;
   if (!user) {
     return response.status(401).json({error: "invalid token"});
   }
   const session = new Session({...request.body, user: user._id});
-  const new_session = await session.save();
-  response.status(201).json(await Session.findById(new_session.id).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));
+  const newSession = await session.save();
+  response.status(201).json(await Session.findById(newSession.id).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));
 });
 
-sessions_router.delete("/:id", async (request, response) => {
+sessionsRouter.delete("/:id", async (request, response) => {
   try {
     const user = request.user;
     if (!user) {
@@ -50,7 +50,7 @@ sessions_router.delete("/:id", async (request, response) => {
   }
 });
 
-sessions_router.put("/:id", async (request, response) => {
+sessionsRouter.put("/:id", async (request, response) => {
   const user = request.user;
   if (!user) {
     return response.status(401).json({error: "invalid token"});
@@ -59,12 +59,12 @@ sessions_router.put("/:id", async (request, response) => {
   if (!(user.id.toString() === session.user.toString())) {
     return response.status(401).json({error: "invalid token"});
   }
-  const saved_session = await Session.findByIdAndUpdate(request.params.id, request.body, {new: true}).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1});
+  const savedSession = await Session.findByIdAndUpdate(request.params.id, request.body, {new: true}).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1});
 
-  response.status(200).json(saved_session);
+  response.status(200).json(savedSession);
 });
 
-sessions_router.put("/:id", async (request, response) => {
+sessionsRouter.put("/:id", async (request, response) => {
   const user = request.user;
   if (!user) {
     return response.status(401).json({error: "invalid token"});
@@ -74,8 +74,8 @@ sessions_router.put("/:id", async (request, response) => {
     return response.status(401).json({error: "invalid token"});
   }
   session.answers = request.params.answers;
-  const saved_session = await session.save();
-  response.status(200).json(await saved_session.populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));
+  const savedSession = await session.save();
+  response.status(200).json(await savedSession.populate("user", {username: 1, name: 1}).populate("quiz", {question: 1, answers: 1}));
 });
 
-module.exports = sessions_router;
+module.exports = sessionsRouter;

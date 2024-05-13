@@ -1,7 +1,9 @@
 import {useState, useEffect, useRef} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import quiz_service from "../services/quizzes";
+import quizService from "../services/quizzes";
 import Quizzes from "./Quizzes";
+import {errorNotification, successNotification, warningNotification} from "../utils/helper";
+import {Store} from "react-notifications-component";
 
 function useInterval(callback, delay) {
   const intervalRef = useRef();
@@ -23,54 +25,56 @@ function useInterval(callback, delay) {
 }
 
 
-const Session = ({quizzes, user, delete_session}) => {
+const Session = ({quizzes, user, role, deleteSession}) => {
   const navigate = useNavigate();
-  const [session, set_session] = useState(null);
+  const [session, setSession] = useState(null);
 
   const id = useParams().id;
   useEffect(() => {
     console.log("useEffect");
-    quiz_service.get_session(id)
+    quizService.getSession(id)
       .then(s => {
-        set_session(s);
-      }, []);
+        setSession(s);
+      })
+      .catch(() => {
+        Store.addNotification(warningNotification);
+      });
   }, []);
 
   useInterval(() => {
-    if (session && (!user || session.user.id !== user.id)) {
-      console.log("poll sent");
-      quiz_service.get_session(id)
+    if (session && (!user || session.user.id !== user.id || role === "player")) {
+      quizService.getSession(id)
         .then(s => {
-          console.log("poll received");
-          set_session(s);
+          setSession(s);
         });
     }
   }, 5000);
 
-  const handle_reveal = (answer, index) => {
-    const new_session = {...session};
-    new_session.answers[index] = new_session.answers[index] === "?" ? answer : "?";
-    quiz_service.update_session(new_session)
+  const handleReveal = (answer, index) => {
+    const newSession = {...session};
+    newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
+    quizService.updateSession(newSession)
       .then(s => {
-        set_session(s);
+        setSession(s);
       });
   };
 
-  const handle_change = () => {
-    quiz_service.update_session({...session, quiz: null});
-    set_session({...session, quiz: null});
+  const handleChange = () => {
+    quizService.updateSession({...session, quiz: null});
+    setSession({...session, quiz: null});
   };
 
-  const handle_quiz_select = (quiz) => {
-    quiz_service.update_session({...session, quiz: quiz, answers: ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?"]})
-      .then(new_session => {
-        set_session(new_session);
+  const handleQuizSelect = (quiz) => {
+    quizService.updateSession({...session, quiz: quiz, answers: ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?"]})
+      .then(newSession => {
+        setSession(newSession);
       });
   };
 
-  const on_session_delete = () => {
-    delete_session(session);
-    navigate("/");
+  const onSessionDelete = () => {
+    if (deleteSession(session)) {
+      navigate("/sessions");
+    }
   };
 
   if (!session) {
@@ -80,9 +84,9 @@ const Session = ({quizzes, user, delete_session}) => {
   }
 
   if (!session.quiz) {
-    if (user && session.user.id === user.id) {
+    if (user && session.user.id === user.id && role === "host") {
       return (
-        <Quizzes quizzes={quizzes} handle_select={handle_quiz_select} user={user}/>
+        <Quizzes quizzes={quizzes} handleSelect={handleQuizSelect} user={user}/>
       );
     } else {
       return (
@@ -101,14 +105,14 @@ const Session = ({quizzes, user, delete_session}) => {
         ))}
       </ol>
       {
-        session.quiz.answers &&
+        role === "host" && session.quiz.answers &&
         <div>
           <ol>
             {session.quiz.answers.map((answer, index) => (
-              <li key={index}><button onClick={() => handle_reveal(answer, index)}>{answer}</button></li>
+              <li key={index}><button onClick={() => handleReveal(answer, index)}>{answer}</button></li>
             ))}
           </ol>
-          <button onClick={handle_change}>Change Quiz</button><button onClick={on_session_delete}>Delete session</button>
+          <button onClick={handleChange}>Change Quiz</button><button onClick={onSessionDelete}>Delete session</button>
         </div>
       }
     </div>
