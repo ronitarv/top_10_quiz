@@ -1,8 +1,12 @@
-import {useState} from "react";
+import { useState } from "react";
 import quizService from "../services/quizzes";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuizzes } from "../reducers/quizReducer";
 
-const QuizCreate = ({quizzes, setQuizzes}) => {
+const QuizCreate = () => {
+  const dispatch = useDispatch();
+  const quizzes = useSelector(state => state.quizzes);
   const navigate = useNavigate();
 
   const [question, setQuestion] = useState("");
@@ -16,9 +20,9 @@ const QuizCreate = ({quizzes, setQuizzes}) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    quizService.createQuiz({question, answers})
+    quizService.createQuiz({ question, answers })
       .then(newQuiz => {
-        setQuizzes(quizzes.concat(newQuiz));
+        dispatch(setQuizzes(quizzes.concat(newQuiz)));
         navigate("/quizzes");
       });
   };

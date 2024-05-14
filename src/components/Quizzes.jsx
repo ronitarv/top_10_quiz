@@ -1,6 +1,20 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import quizService from "../services/quizzes";
+import { setQuizzes } from "../reducers/quizReducer";
 
-const Quizzes = ({quizzes, handleSelect, user, deleteQuiz}) => {
+const Quizzes = ({ handleSelect }) => {
+  const dispatch = useDispatch();
+  const quizzes = useSelector(state => state.quizzes);
+  const user = useSelector(state => state.user);
+
+  const deleteQuiz = (quiz) => {
+    if (window.confirm(`Are you sure you want to remove the quiz: ${quiz.question}`)) {
+      quizService.deleteQuiz(quiz.id).then(() => {
+        dispatch(setQuizzes(quizzes.filter(q => q.id !== quiz.id)));
+      });
+    }
+  };
 
   return (
     <div>

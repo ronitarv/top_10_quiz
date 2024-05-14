@@ -1,9 +1,10 @@
-import {useState, useEffect, useRef} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import quizService from "../services/quizzes";
 import Quizzes from "./Quizzes";
-import {errorNotification, successNotification, warningNotification} from "../utils/helper";
-import {Store} from "react-notifications-component";
+import { warningNotification } from "../utils/helper";
+import { Store } from "react-notifications-component";
+import { useSelector } from "react-redux";
 
 function useInterval(callback, delay) {
   const intervalRef = useRef();
@@ -25,8 +26,11 @@ function useInterval(callback, delay) {
 }
 
 
-const Session = ({quizzes, user, role, deleteSession}) => {
+const Session = ({ deleteSession }) => {
   const navigate = useNavigate();
+  const quizzes = useSelector(state => state.quizzes);
+  const user = useSelector(state => state.user);
+  const role = useSelector(state => state.role);
   const [session, setSession] = useState(null);
 
   const id = useParams().id;
@@ -37,7 +41,9 @@ const Session = ({quizzes, user, role, deleteSession}) => {
         setSession(s);
       })
       .catch(() => {
-        Store.addNotification(warningNotification);
+        console.log("error");
+        Store.addNotification(warningNotification("Session", "The session was deleted"));
+        navigate("/sessions");
       });
   }, []);
 
@@ -46,12 +52,17 @@ const Session = ({quizzes, user, role, deleteSession}) => {
       quizService.getSession(id)
         .then(s => {
           setSession(s);
+        })
+        .catch(() => {
+          console.log("error");
+          Store.addNotification(warningNotification("Session", `The session "${session.name}" was deleted`));
+          navigate("/sessions");
         });
     }
   }, 5000);
 
   const handleReveal = (answer, index) => {
-    const newSession = {...session};
+    const newSession = { ...session };
     newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
     quizService.updateSession(newSession)
       .then(s => {
@@ -60,12 +71,12 @@ const Session = ({quizzes, user, role, deleteSession}) => {
   };
 
   const handleChange = () => {
-    quizService.updateSession({...session, quiz: null});
-    setSession({...session, quiz: null});
+    quizService.updateSession({ ...session, quiz: null });
+    setSession({ ...session, quiz: null });
   };
 
   const handleQuizSelect = (quiz) => {
-    quizService.updateSession({...session, quiz: quiz, answers: ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?"]})
+    quizService.updateSession({ ...session, quiz: quiz, answers: ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?"] })
       .then(newSession => {
         setSession(newSession);
       });

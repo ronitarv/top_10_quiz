@@ -7,7 +7,7 @@ export const successNotification = (title, message) => ({
   animationIn: ["animated", "fadeIn"],
   animationOut: ["animated", "fadeOut"],
   dismiss: {
-    duration: 5000,
+    duration: 3000,
     onScreen: true
   },
 });
@@ -22,7 +22,7 @@ export const warningNotification = (title, message) => {
     animationIn: ["animated", "fadeIn"],
     animationOut: ["animated", "fadeOut"],
     dismiss: {
-      duration: 5000,
+      duration: 3000,
       onScreen: true
     },
   });
@@ -38,7 +38,7 @@ export const errorNotification = (title, message) => {
     animationIn: ["animated", "fadeIn"],
     animationOut: ["animated", "fadeOut"],
     dismiss: {
-      duration: 5000,
+      duration: 3000,
       onScreen: true
     },
   });

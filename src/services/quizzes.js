@@ -17,7 +17,7 @@ const setToken = newToken => {
 
 const getQuizzes = async () => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.get(quizUrl, config);
   return req.data;
@@ -25,7 +25,7 @@ const getQuizzes = async () => {
 
 const createQuiz = async quizData => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.post(quizUrl, quizData, config);
   return req.data;
@@ -33,7 +33,7 @@ const createQuiz = async quizData => {
 
 const deleteQuiz = async id => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.delete(`${quizUrl}/${id}`, config);
   return req.status;
@@ -46,7 +46,7 @@ const getSessions = async () => {
 
 const getSession = async id => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.get(`${sessionUrl}/${id}`, config);
   return req.data;
@@ -54,7 +54,7 @@ const getSession = async id => {
 
 const createSession = async sessionData => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.post(sessionUrl, sessionData, config);
   return req.data;
@@ -62,7 +62,7 @@ const createSession = async sessionData => {
 
 const deleteSession = async id => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.delete(`${sessionUrl}/${id}`, config);
   return req;
@@ -70,7 +70,7 @@ const deleteSession = async id => {
 
 const updateSession = async (sessionData) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const userId = sessionData.user ? sessionData.user.id : null;
   const quizId = sessionData.quiz ? sessionData.quiz.id : null;
@@ -89,7 +89,7 @@ const createUser = async credentials => {
 
 const deleteUser = async id => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   };
   const req = await axios.delete(`${userUrl}/${id}`, config);
   return req;

@@ -1,15 +1,22 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import quizService from "../services/quizzes";
+import { useDispatch, useSelector } from "react-redux";
+import { setSessions } from "../reducers/sessionReducer";
 
-const Sessions = ({sessions, setSessions, user, role, deleteSession}) => {
+const Sessions = ({ deleteSession }) => {
+  const dispatch = useDispatch();
+  const sessions = useSelector(state => state.sessions);
+  const user = useSelector(state => state.user);
+  const role = useSelector(state => state.role);
   const [name, setName] = useState("");
 
   const onSubmit = (event) => {
     event.preventDefault();
-    quizService.createSession({name})
+    quizService.createSession({ name })
       .then(session => {
-        setSessions(sessions.concat(session));
+        dispatch(setSessions(sessions.concat(session)));
+        setName("");
       });
   };
 

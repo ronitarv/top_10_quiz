@@ -3,10 +3,10 @@ const Quiz = require("../models/quiz");
 
 quizzesRouter.get("/", async (request, response) => {
   if (request.user) {
-    const quizzes = await Quiz.find({}).populate("user", {username: 1, name: 1});
+    const quizzes = await Quiz.find({}).populate("user", { username: 1, name: 1 });
     response.json(quizzes);
   } else {
-    const quizzes = await Quiz.find({}, {answers: 0}).populate("user", {username: 1, name: 1});
+    const quizzes = await Quiz.find({}, { answers: 0 }).populate("user", { username: 1, name: 1 });
     response.json(quizzes);
   }
 });
@@ -14,27 +14,27 @@ quizzesRouter.get("/", async (request, response) => {
 quizzesRouter.post("/", async (request, response) => {
   const user = request.user;
   if (!user) {
-    return response.status(401).json({error: "invalid token"});
+    return response.status(401).json({ error: "invalid token" });
   }
-  const quiz = new Quiz({...request.body, user: user._id});
+  const quiz = new Quiz({ ...request.body, user: user._id });
   const savedQuiz = await quiz.save();
   user.blogs = user.quizzes.concat(savedQuiz._id);
   await user.save();
-  response.status(201).json(await savedQuiz.populate("user", {username: 1, name: 1}));
+  response.status(201).json(await savedQuiz.populate("user", { username: 1, name: 1 }));
 });
 
 quizzesRouter.delete("/:id", async (request, response) => {
   try {
     const user = request.user;
     if (!user) {
-      return response.status(401).json({error: "invalid token"});
+      return response.status(401).json({ error: "invalid token" });
     }
     const quiz = await Quiz.findById(request.params.id);
     if (!quiz) {
-      return response.status(404).json({error: "quiz does not exist"});
+      return response.status(404).json({ error: "quiz does not exist" });
     }
     if (!(user.id.toString() === quiz.user.toString())) {
-      return response.status(401).json({error: "invalid token"});
+      return response.status(401).json({ error: "invalid token" });
     }
     await Quiz.findByIdAndDelete(request.params.id);
     response.status(204).end();
