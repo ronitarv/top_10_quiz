@@ -4,7 +4,8 @@ import quizService from "../services/quizzes";
 import Quizzes from "./Quizzes";
 import { warningNotification } from "../utils/helper";
 import { Store } from "react-notifications-component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteSession } from "../reducers/sessionReducer";
 
 function useInterval(callback, delay) {
   const intervalRef = useRef();
@@ -26,8 +27,9 @@ function useInterval(callback, delay) {
 }
 
 
-const Session = ({ deleteSession }) => {
+const Session = ({ removeSession }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const quizzes = useSelector(state => state.quizzes);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
@@ -41,8 +43,9 @@ const Session = ({ deleteSession }) => {
         setSession(s);
       })
       .catch(() => {
-        console.log("error");
+        console.log("error effect");
         Store.addNotification(warningNotification("Session", "The session was deleted"));
+        dispatch(deleteSession(id));
         navigate("/sessions");
       });
   }, []);
@@ -54,8 +57,9 @@ const Session = ({ deleteSession }) => {
           setSession(s);
         })
         .catch(() => {
-          console.log("error");
+          console.log("error polling");
           Store.addNotification(warningNotification("Session", `The session "${session.name}" was deleted`));
+          dispatch(deleteSession(id));
           navigate("/sessions");
         });
     }
@@ -83,7 +87,7 @@ const Session = ({ deleteSession }) => {
   };
 
   const onSessionDelete = () => {
-    if (deleteSession(session)) {
+    if (removeSession(session)) {
       navigate("/sessions");
     }
   };

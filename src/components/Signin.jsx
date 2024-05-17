@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import quizService from "../services/quizzes";
 import { Store } from "react-notifications-component";
-import { errorNotification, successNotification } from "../utils/helper";
+import { errorNotification } from "../utils/helper";
 import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 
@@ -22,7 +22,7 @@ const Signin = () => {
         window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
       }
       navigate("/sessions");
-      Store.addNotification(successNotification("Signin", `Signed in as "${user.username}"`));
+      //Store.addNotification(successNotification("Signin", `Signed in as "${user.username}"`));
     } catch (error) {
       Store.addNotification(errorNotification("Signin", "Username or password is incorrect"));
     }

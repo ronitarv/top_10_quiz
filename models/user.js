@@ -8,14 +8,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  name: String,
   passwordHash: String,
-  quizzes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Quiz"
-    }
-  ]
 });
 
 userSchema.plugin(uniqueValidator);

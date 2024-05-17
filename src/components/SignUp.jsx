@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import quizService from "../services/quizzes";
 import { Store } from "react-notifications-component";
-import { errorNotification, successNotification } from "../utils/helper";
+import { errorNotification, warningNotification } from "../utils/helper";
 import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 
@@ -21,12 +21,12 @@ const Signup = () => {
         window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
       }
       navigate("/sessions");
-      Store.addNotification(successNotification("Sign up", `Signed up as "${user.username}"`));
+      setUsername("");
+      setPassword("");
+      //Store.addNotification(successNotification("Sign up", `Signed up as "${user.username}"`));
     } catch (error) {
       Store.addNotification(errorNotification("Sign up", "Signing in to created user failed"));
     }
-    setUsername("");
-    setPassword("");
   };
 
   const onSignup = (event) => {
@@ -35,8 +35,9 @@ const Signup = () => {
       .then(() => {
         handleLogin(username, password);
       })
-      .catch(() => {
-        Store.addNotification(errorNotification("Sign up", "Creating user failed"));
+      .catch((error) => {
+        //console.log(error);
+        Store.addNotification(warningNotification("Sign up", error.response.data.error));
       });
   };
 

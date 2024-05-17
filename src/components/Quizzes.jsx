@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import quizService from "../services/quizzes";
-import { setQuizzes } from "../reducers/quizReducer";
+import { deleteQuiz } from "../reducers/quizReducer";
 
 const Quizzes = ({ handleSelect }) => {
   const dispatch = useDispatch();
   const quizzes = useSelector(state => state.quizzes);
   const user = useSelector(state => state.user);
 
-  const deleteQuiz = (quiz) => {
+  const removeQuiz = (quiz) => {
     if (window.confirm(`Are you sure you want to remove the quiz: ${quiz.question}`)) {
       quizService.deleteQuiz(quiz.id).then(() => {
-        dispatch(setQuizzes(quizzes.filter(q => q.id !== quiz.id)));
+        dispatch(deleteQuiz(quiz.id));
       });
     }
   };
@@ -28,12 +28,12 @@ const Quizzes = ({ handleSelect }) => {
             <ul></ul>
             {quiz.answers &&
             <ol>
-              {quiz.answers.map(answer => (
-                <li key={answer}>{answer}</li>
+              {quiz.answers.map((answer, index) => (
+                <li key={index + answer}>{answer}</li>
               ))}
             </ol>}
             {handleSelect && <button onClick={() => handleSelect(quiz)}>Select</button>}
-            <button onClick={() => deleteQuiz(quiz)}>remove</button>
+            <button onClick={() => removeQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link>
           </li>
         ))}
       </ul>

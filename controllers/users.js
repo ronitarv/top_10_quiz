@@ -4,8 +4,11 @@ const User = require("../models/user");
 
 userRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
-  if (!(password && password.length >= 3)) {
-    return response.status(400).json({ error: "password must be at least 3 characters long" });
+  if (!(username && username.length >= 3)) {
+    return response.status(400).json({ error: "Username must be at least 3 characters long" });
+  }
+  if (!(password && password.length >= 4)) {
+    return response.status(400).json({ error: "password must be at least 4 characters long" });
   }
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
@@ -22,7 +25,8 @@ userRouter.post("/", async (request, response) => {
       response.status(201).json(savedUser);
     })
     .catch((error) => {
-      response.status(400).json({ error: error.message });
+      console.log("error", error);
+      response.status(400).json({ error: error._message === "User validation failed" ? "The username is taken" : error });
     });
 });
 

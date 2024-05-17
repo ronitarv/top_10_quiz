@@ -16,11 +16,33 @@ quizzesRouter.post("/", async (request, response) => {
   if (!user) {
     return response.status(401).json({ error: "invalid token" });
   }
-  const quiz = new Quiz({ ...request.body, user: user._id });
-  const savedQuiz = await quiz.save();
-  user.blogs = user.quizzes.concat(savedQuiz._id);
-  await user.save();
-  response.status(201).json(await savedQuiz.populate("user", { username: 1, name: 1 }));
+  Quiz.init()
+    .then(async () => {
+      const quiz = new Quiz({ ...request.body, user: user._id });
+      const savedQuiz = await quiz.save();
+      //user.blogs = user.quizzes.concat(savedQuiz._id);
+      //await user.save();
+      response.status(201).json(await savedQuiz.populate("user", { username: 1, name: 1 }));
+    })
+    .catch((error) => {
+      response.status(400).json({ error: error.message });
+    });
+});
+
+quizzesRouter.put("/:id", async (request, response) => {
+  const user = request.user;
+  if (!user) {
+    return response.status(401).json({ error: "invalid token" });
+  }
+  const quiz = await Quiz.findById(request.params.id);
+  if (!quiz) {
+    return response.status(404).json({ error: "quiz not found" });
+  }
+  if (!(user.id.toString() === quiz.user.toString())) {
+    return response.status(401).json({ error: "invalid token" });
+  }
+  const savedQuiz = await Quiz.findByIdAndUpdate(request.params.id, request.body, { new: true }).populate("user", { username: 1 });
+  return response.status(200).json(savedQuiz);
 });
 
 quizzesRouter.delete("/:id", async (request, response) => {

@@ -31,6 +31,18 @@ const createQuiz = async quizData => {
   return req.data;
 };
 
+const updateQuiz = async (quizData) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const userId = quizData.user ? quizData.user.id : null;
+  const req = await axios.put(`${quizUrl}/${quizData.id}`, {
+    ...quizData,
+    user: userId
+  }, config);
+  return req.data;
+};
+
 const deleteQuiz = async id => {
   const config = {
     headers: { Authorization: token }
@@ -101,7 +113,7 @@ const login = async credentials => {
 };
 
 export default {
-  setToken, getQuizzes, createQuiz, deleteQuiz,
+  setToken, getQuizzes, createQuiz, updateQuiz, deleteQuiz,
   getSessions, getSession, createSession, deleteSession,
   updateSession, createUser, deleteUser, login
 };
