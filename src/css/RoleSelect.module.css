@@ -1,0 +1,13 @@
+body {
+  background-image: url("../assets/background.jpg");
+  color: white;
+}
+
+.button_left {
+  color: green;
+  block-size: 100%;
+}
+
+.button_right {
+  color: red;
+}

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../reducers/roleReducer";
+import styles from "../css/RoleSelect.module.css";
 
 const RoleSelect = () => {
   const dispatch = useDispatch();
@@ -36,10 +37,20 @@ const RoleSelect = () => {
   // };
 
   return (
-    <div>
+    <div className={styles.body}>
       <h2>Choose your role</h2>
-      <button onClick={() => handleSetRole("host")}>Host</button>
-      <button onClick={() => handleSetRole("player")}>Player</button>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <button className={styles.button_left} onClick={() => handleSetRole("host")}>Host</button>
+            </td>
+            <td>
+              <button className={styles.button_right} onClick={() => handleSetRole("player")}>Player</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import quizReducer from "./reducers/quizReducer.js";
 import sessionReducer from "./reducers/sessionReducer.js";
 import userReducer from "./reducers/userReducer.js";
 import roleReducer from "./reducers/roleReducer.js";
+import "./index.css";
 
 const store = configureStore({
   reducer: {
