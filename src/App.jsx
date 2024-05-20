@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, NavLink } from "react-router-dom";
 import Signin from "./components/Signin";
 import Signup from "./components/SignUp";
 import Quizzes from "./components/Quizzes";
@@ -18,10 +18,13 @@ import { setSessions, deleteSession } from "./reducers/sessionReducer";
 import { setUser } from "./reducers/userReducer";
 import { setRole } from "./reducers/roleReducer";
 import { useDispatch, useSelector } from "react-redux";
+import styles from "./css/App.module.css";
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location.pathname);
   //const quizzes = useSelector(state => state.quizzes);
   //const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
@@ -94,13 +97,24 @@ const App = () => {
   return (
     <div>
       <ReactNotifications />
-      <div>
-        <Link to="/">Start</Link>
-        {role && <Link to="/sessions">Sessions</Link>}
-        {role === "host" && user && <Link to="/quizzes">Quizzes</Link>}
-        {role === "host" && (user ? <span><em>{user.username} logged in</em> <button onClick={handleLogout}>logout</button></span> : <Link to="/signin">sign in</Link>)}
-        {role === "host" && user && <button onClick={deleteUser}>Delete user</button>}
+      {/* {location.pathname !== "/" && */}
+      <div className={styles.navbar}>
+        <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/" activeClassName={styles.active}>Start</NavLink>
+        <ul className={styles.options}>
+          {role && <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/sessions">Sessions</NavLink></li>}
+          {role === "host" && user && <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/quizzes">Quizzes</NavLink></li>}
+          {role === "host" &&
+            <li>
+              <label>User</label>
+              <ul className={styles.dropMenu}>
+                {role === "host" && (user ? <li><div><em>{user.username} logged in</em></div> <div><button onClick={handleLogout}>logout</button></div></li> : <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin">sign in</NavLink></li>)}
+                {role === "host" && user && <li><button onClick={deleteUser}>Delete user</button></li>}
+              </ul>
+            </li>
+          }
+        </ul>
       </div>
+      {/* } */}
       <Routes>
         <Route path="/" element={<RoleSelect />} />
         {role && <Route path="/sessions" element={<Sessions removeSession={removeSession}/>} />}

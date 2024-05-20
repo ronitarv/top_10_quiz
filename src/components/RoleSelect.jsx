@@ -38,19 +38,10 @@ const RoleSelect = () => {
 
   return (
     <div className={styles.body}>
-      <h2>Choose your role</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <button className={styles.button_left} onClick={() => handleSetRole("host")}>Host</button>
-            </td>
-            <td>
-              <button className={styles.button_right} onClick={() => handleSetRole("player")}>Player</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className={styles.div}>
+        <button className={`${styles.button} ${styles.host}`} onClick={() => handleSetRole("host")}>Host</button>
+        <button className={`${styles.button} ${styles.player}`} onClick={() => handleSetRole("player")}>Player</button>
+      </div>
     </div>
   );
 };

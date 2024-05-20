@@ -1,0 +1,47 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 2svh;
+  font-size: 30px;
+  position:relative;
+  z-index: 99;
+  margin-bottom: 30px;
+}
+
+.options {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0);
+  text-align: center;
+  list-style: none;
+  margin-right: 7px;
+}
+
+.option, .activeOption {
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  font-size: 30px;
+  font-family: 'Segoe UI';
+  font-weight: 1000;
+}
+
+.dropMenu {
+  opacity: 1;
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.068);
+  list-style: none;
+  font-size: 20px;
+}
+
+.options li:hover .dropMenu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.activeOption {
+  color: rgba(255, 255, 255, 0.404);
+}
