@@ -1,21 +1,18 @@
 .navbar {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  justify-content:space-between;
   height: 2svh;
   font-size: 30px;
-  position:relative;
   z-index: 99;
   margin-bottom: 30px;
+  gap: 50px
 }
 
 .options {
   display: flex;
   background-color: rgba(0, 0, 0, 0);
-  text-align: center;
   list-style: none;
-  margin-right: 7px;
+  gap: 30px;
 }
 
 .option, .activeOption {
@@ -27,21 +24,71 @@
   font-weight: 1000;
 }
 
+.user {
+  margin-right: 40px;
+  padding: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 30px;
+  font-family: 'Segoe UI';
+  font-weight: 1000;
+}
+
 .dropMenu {
-  opacity: 1;
+  opacity: 0;
   visibility: hidden;
   position: absolute;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.068);
+  margin-right: 100px;
+  background-color: rgba(255, 255, 255, 0.103);
+  border-radius: 10px;
   list-style: none;
+  font-size: 20px;
+  text-align: start;
+  width: 150px;
+}
+
+.dropMenu em {
   font-size: 20px;
 }
 
-.options li:hover .dropMenu {
+.user:hover .dropMenu {
   opacity: 1;
   visibility: visible;
 }
 
 .activeOption {
-  color: rgba(255, 255, 255, 0.404);
+  color: rgb(0, 195, 255);
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+  width: 100%;
+  text-align: start;
+  padding-left: 10px;
+}
+
+.button:hover {
+  background: rgba(0, 0, 0, 1);
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  padding-top: 1000px;
+  margin-top: 10px
+}
+
+.table tr {
+  border-top: 1px solid;
+}
+
+.table td {
+  vertical-align: center;
 }

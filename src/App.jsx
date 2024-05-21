@@ -19,6 +19,13 @@ import { setUser } from "./reducers/userReducer";
 import { setRole } from "./reducers/roleReducer";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./css/App.module.css";
+import { SlUser } from "react-icons/sl";
+import { SlHome } from "react-icons/sl";
+import { SlLogin } from "react-icons/sl";
+import { SlLogout } from "react-icons/sl";
+import { MdDeleteOutline } from "react-icons/md";
+
+
 
 const App = () => {
   const navigate = useNavigate();
@@ -90,7 +97,10 @@ const App = () => {
 
   if (!role) {
     return (
-      <RoleSelect />
+      <div>
+        <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/">Start</NavLink>
+        <RoleSelect />
+      </div>
     );
   }
 
@@ -99,20 +109,31 @@ const App = () => {
       <ReactNotifications />
       {/* {location.pathname !== "/" && */}
       <div className={styles.navbar}>
-        <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/" activeClassName={styles.active}>Start</NavLink>
-        <ul className={styles.options}>
-          {role && <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/sessions">Sessions</NavLink></li>}
-          {role === "host" && user && <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/quizzes">Quizzes</NavLink></li>}
-          {role === "host" &&
-            <li>
-              <label>User</label>
-              <ul className={styles.dropMenu}>
-                {role === "host" && (user ? <li><div><em>{user.username} logged in</em></div> <div><button onClick={handleLogout}>logout</button></div></li> : <li><NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin">sign in</NavLink></li>)}
-                {role === "host" && user && <li><button onClick={deleteUser}>Delete user</button></li>}
-              </ul>
-            </li>
-          }
-        </ul>
+        <div className={styles.options}>
+          <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/"><SlHome /></NavLink>
+          {role && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/sessions">Sessions</NavLink>}
+          {role === "host" && user && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/quizzes">Quizzes</NavLink>}
+        </div>
+        {role === "host" && user ?
+          <div className={styles.user}>
+            {/* // <li> */}
+            <div><SlUser /><label style={{ "paddingLeft": "10px" }}>User</label></div>
+            <div className={styles.dropMenu}>
+
+              <div>
+                <div style={{ "textAlign": "center", "paddingTop": "5px" }}><em>{user.username}</em></div>
+                <table className={styles.table}>
+                  <tbody>
+                    <tr><td><button className={styles.button} onClick={handleLogout}><SlLogout /> Logout</button></td></tr>
+                    <tr><td><button className={styles.button} onClick={deleteUser}><MdDeleteOutline /> Delete user</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          : <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin"><SlLogin /> sign in</NavLink>
+        }
+
       </div>
       {/* } */}
       <Routes>
