@@ -5,13 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSession, setSessions } from "../reducers/sessionReducer";
 import { Store } from "react-notifications-component";
 import { errorNotification, warningNotification } from "../utils/helper";
+import { IoMdRefresh } from "react-icons/io";
+import styles from "../css/Sessions.module.css";
+import { IoIosArrowRoundForward } from "react-icons/io";
 
-const Sessions = ({ removeSession }) => {
+const Sessions = () => {
   const dispatch = useDispatch();
   const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
   const [name, setName] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -32,6 +36,7 @@ const Sessions = ({ removeSession }) => {
   };
 
   const refetchSessions = () => {
+    setRefresh(true);
     quizService.getSessions()
       .then(sessions => {
         dispatch(setSessions(sessions));
@@ -40,40 +45,56 @@ const Sessions = ({ removeSession }) => {
 
   return (
     <div>
-      <h1>Sessions</h1><button onClick={refetchSessions}>update</button>
+      <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }}>
+        <h1>Sessions</h1>
+        <button className={styles.refreshButton} onClick={refetchSessions}>
+          <IoMdRefresh className={`${styles.refreshIcon} ${refresh ? styles.spin : ""}`} onAnimationEnd={() => setRefresh(false)} />
+        </button>
+      </div>
       {(user && role === "host")
         ?
         <div>
           <h3>Create new</h3>
-          <form onSubmit={onSubmit}>
-            name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-            <button type="submit">create</button>
+          {/* <form onSubmit={onSubmit}> */}
+          <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
+            <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+            <button type="submit"><IoIosArrowRoundForward /></button>
           </form>
+          {/* </form> */}
           <h2>My sessions</h2>
-          <ul>
+          <div className={styles.sessions}>
             {sessions.filter(s => s.user.id === user.id).map(session => (
-              <li key={session.name}>
-                <Link to={`/sessions/${session.id}`}>{session.name}</Link><button onClick={() => removeSession(session)}>delete</button>
-              </li>
+              <div key={session.name} className={styles.session}>
+                <Link style={{ "textDecoration": "none" }} to={`/sessions/${session.id}`}>
+                  <div style={{ "fontSize": "30px" }}>{session.name}</div>
+                  <div>host: {session.user.username}</div>
+                </Link>
+              </div>
             ))}
-          </ul>
+          </div>
           <h2>Others sessions</h2>
-          <ul>
+          <div className={styles.sessions}>
             {sessions.filter(s => s.user.id !== user.id).map(session => (
-              <li key={session.name}>
-                <Link to={`/sessions/${session.id}`}>{session.name}</Link>
-              </li>
+              <div key={session.name} className={styles.session}>
+                <Link style={{ "textDecoration": "none" }} to={`/sessions/${session.id}`}>
+                  <div style={{ "fontSize": "30px" }}>{session.name}</div>
+                  <div>host: {session.user.username}</div>
+                </Link>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
         :
-        <ul>
+        <div className={styles.sessions}>
           {sessions.map(session => (
-            <li key={session.name}>
-              <Link to={`/sessions/${session.id}`}>{session.name}</Link>
-            </li>
+            <div key={session.name} className={styles.session}>
+              <Link style={{ "textDecoration": "none" }} to={`/sessions/${session.id}`}>
+                <div style={{ "fontSize": "30px" }}>{session.name}</div>
+                <div>host: {session.user.username}</div>
+              </Link>
+            </div>
           ))}
-        </ul>
+        </div>
       }
     </div>
   );

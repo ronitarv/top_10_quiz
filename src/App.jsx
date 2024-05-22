@@ -114,7 +114,7 @@ const App = () => {
           {role && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/sessions">Sessions</NavLink>}
           {role === "host" && user && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/quizzes">Quizzes</NavLink>}
         </div>
-        {role === "host" && user ?
+        {role !== "player" && (role === "host" && user ?
           <div className={styles.user}>
             {/* // <li> */}
             <div><SlUser /><label style={{ "paddingLeft": "10px" }}>User</label></div>
@@ -131,14 +131,14 @@ const App = () => {
               </div>
             </div>
           </div>
-          : <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin"><SlLogin /> sign in</NavLink>
+          : <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin"><SlLogin /> sign in</NavLink>)
         }
 
       </div>
       {/* } */}
       <Routes>
         <Route path="/" element={<RoleSelect />} />
-        {role && <Route path="/sessions" element={<Sessions removeSession={removeSession}/>} />}
+        {role && <Route path="/sessions" element={<Sessions />} />}
         {role && <Route path="/sessions/:id" element={<Session removeSession={removeSession}/>} />}
         {role === "host" && user && <Route path="/quizzes" element={<Quizzes/>} />}
         {role === "host" && user && <Route path="/quizzes/create" element={<QuizCreate/>} />}

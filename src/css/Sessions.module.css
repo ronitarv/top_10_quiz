@@ -1,0 +1,121 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+.refreshButton {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.refreshIcon {
+  color: rgb(0, 195, 255);
+  font-size: 40px;
+}
+
+.spin {
+  animation: spin 1s ease-in-out
+}
+
+.sessions {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.session {
+  background-color: rgba(128, 128, 128, 0.158);
+  border: solid 1px rgba(0, 68, 146, 1);
+  box-shadow: 0px 0px 10px 0px rgba(0, 68, 146, 1);
+  margin: 10px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  flex: 1;
+  min-width: 100px;
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.session:hover {
+  box-shadow: 0px 0px 20px 5px rgba(0, 68, 146, 1);
+}
+
+.session div {
+  color: white;
+  text-decoration: none;
+}
+
+:root {
+  --input-background: rgba(57, 63, 84, 0.8);
+  --input-text-inactive: #7881A1;
+  --input-text-active: #BFD2FF;
+}
+
+@keyframes gradient { 
+  0%{background-position:0 0}
+  100%{background-position:100% 0}
+}
+
+.webflowStyleInput {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  width: 400px;
+  height: 25px;
+  border-radius: 2px;
+  padding: 1.4px 2px 1.6px;
+  background-color: var(--input-background);
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 999;
+    height: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    background-position: 0% 0%;
+    background: linear-gradient(to right, #0051ff, #5900ff, #b700ff, #00e1ff, #0051ff, #5900ff);
+    background-size: 500% auto;
+    animation: gradient 10s linear infinite;
+  }
+}
+
+.webflowStyleInput input {
+  border-style: none;
+  background: transparent;
+  outline: none;
+  /* flex-grow: 1; */
+  color: var(--input-text-active);
+  font-size: 20px;
+  width: 90%;
+  line-height: 90px;
+  vertical-align: middle;
+  &::-webkit-input-placeholder {
+    color: var(--input-text-inactive);
+  }
+}
+
+.webflowStyleInput button {
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color:  var(--input-text-inactive);
+  font-size: 25px;
+  line-height: 20px;
+  vertical-align: middle;
+  transition: color .25s;
+  &:hover {
+    color: var(--input-text-active);
+  }
+}
