@@ -45,21 +45,26 @@ const Sessions = () => {
 
   return (
     <div>
-      <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }}>
-        <h1>Sessions</h1>
-        <button className={styles.refreshButton} onClick={refetchSessions}>
-          <IoMdRefresh className={`${styles.refreshIcon} ${refresh ? styles.spin : ""}`} onAnimationEnd={() => setRefresh(false)} />
-        </button>
+      <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px", "justifyContent": "space-between", "flexWrap": "wrap" }} >
+        <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }} >
+          <h1>Sessions</h1>
+          <button className={styles.refreshButton} onClick={refetchSessions}>
+            <IoMdRefresh className={`${styles.refreshIcon} ${refresh ? styles.spin : ""}`} onAnimationEnd={() => setRefresh(false)} />
+          </button>
+        </div>
+        {role === "host" && user &&
+          <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }} >
+            <h3>Create new</h3>
+            <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
+              <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+              <button type="submit"><IoIosArrowRoundForward /></button>
+            </form>
+          </div>
+        }
       </div>
       {(user && role === "host")
         ?
         <div>
-          <h3>Create new</h3>
-          {/* <form onSubmit={onSubmit}> */}
-          <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
-            <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
-            <button type="submit"><IoIosArrowRoundForward /></button>
-          </form>
           {/* </form> */}
           <h2>My sessions</h2>
           <div className={styles.sessions}>

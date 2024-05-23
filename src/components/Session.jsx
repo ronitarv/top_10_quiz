@@ -6,6 +6,7 @@ import { warningNotification } from "../utils/helper";
 import { Store } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSession } from "../reducers/sessionReducer";
+import styles from "../css/Session.module.css";
 
 function useInterval(callback, delay) {
   const intervalRef = useRef();
@@ -68,6 +69,7 @@ const Session = ({ removeSession }) => {
   const handleReveal = (answer, index) => {
     const newSession = { ...session };
     newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
+    setSession(newSession);
     quizService.updateSession(newSession)
       .then(s => {
         setSession(s);
@@ -111,25 +113,31 @@ const Session = ({ removeSession }) => {
   }
 
   return (
-    <div>
-      <h2>{session.name}</h2>
-      <h3>{session.quiz.question}</h3>
-      <ol>
-        {session.answers.map((answer, index) => (
-          <li key={index}>{answer}</li>
-        ))}
-      </ol>
-      {
-        role === "host" && session.quiz.answers &&
-        <div>
+    <div className={styles.body}>
+      <h3>{session.name}</h3>
+      <h3><i>{session.quiz.question}</i></h3>
+      <div className={styles.container}>
+        <div className={styles.playerAnswers}>
           <ol>
-            {session.quiz.answers.map((answer, index) => (
-              <li key={index}><button onClick={() => handleReveal(answer, index)}>{answer}</button></li>
+            {session.answers.map((answer, index) => (
+              <li key={index}>{answer}</li>
             ))}
           </ol>
-          <button onClick={handleChange}>Change Quiz</button><button onClick={onSessionDelete}>Delete session</button>
         </div>
-      }
+        {
+          role === "host" && session.quiz.answers &&
+          <div className={styles.hostAnswers}>
+            <ol>
+              {session.quiz.answers.map((answer, index) => (
+                <li key={index}><div className={styles.revealDiv}><button className={`${styles.revealButton} ${session.answers[index] !== "?" ? styles.checkedButton : ""}`} onClick={() => handleReveal(answer, index)}>{answer}</button></div></li>
+              ))}
+            </ol>
+            <div className={styles.optionButtons}>
+              <button onClick={handleChange}>Change Quiz</button><button onClick={onSessionDelete}>Delete session</button>
+            </div>
+          </div>
+        }
+      </div>
     </div>
   );
 

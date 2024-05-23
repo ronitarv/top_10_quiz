@@ -1,3 +1,9 @@
+:root {
+  --input-background: rgba(57, 63, 84, 0.8);
+  --input-text-inactive: #7881A1;
+  --input-text-active: #BFD2FF;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -37,10 +43,11 @@
   border-radius: 5px;
   padding: 10px 20px;
   flex: 1;
-  min-width: 100px;
+  min-width: fit-content;
   font-size: 20px;
   text-decoration: none;
   color: white;
+  max-width: 300px;
 }
 
 .session:hover {
@@ -50,12 +57,6 @@
 .session div {
   color: white;
   text-decoration: none;
-}
-
-:root {
-  --input-background: rgba(57, 63, 84, 0.8);
-  --input-text-inactive: #7881A1;
-  --input-text-active: #BFD2FF;
 }
 
 @keyframes gradient { 
@@ -68,7 +69,8 @@
   display: flex;
   flex-direction: row;
   justify-content: left;
-  width: 400px;
+  min-width: 200px;
+  max-width: 400px;
   height: 25px;
   border-radius: 2px;
   padding: 1.4px 2px 1.6px;
@@ -79,7 +81,7 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    z-index: 999;
+    z-index: 2;
     height: 2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;

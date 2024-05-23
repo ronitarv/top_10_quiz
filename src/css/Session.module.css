@@ -1,0 +1,82 @@
+.body {
+  font-size: 40px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.playerAnswers li::marker {
+  color: rgb(0, 89, 255);
+}
+
+.playerAnswers li {
+  padding-left: 30px;
+}
+
+.playerAnswers {
+  margin-left: 20px;
+  min-width: 400px
+}
+
+.hostAnswers {
+  margin-right: 20px;
+}
+
+.hostAnswers li {
+  line-height: 100%;
+  margin-top: 1px;
+}
+
+.hostAnswers li::marker {
+  color: rgb(255, 0, 106);
+}
+
+.revealDiv {
+  vertical-align: middle;
+  text-align: center;
+  max-width: 500px
+}
+
+.revealButton {
+  vertical-align: middle;
+  max-width: 300px;
+  width: 100%;
+  height: 47px;
+  margin: auto;
+  padding: 0px;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  color: white;
+  background-color: rgb(26, 26, 26);
+  &:hover {
+    background-color: rgb(53, 53, 53);
+  }
+}
+
+.checkedButton {
+  vertical-align: middle;
+  border: solid 3px;
+  border-color: rgb(255, 0, 0);
+  box-shadow: 0px 0px 10px 0px red;
+}
+
+.optionButtons button {
+  /* display: inline; */
+  /* margin: 0 auto; */
+  width: 120px;
+  height: 45px;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  color: white;
+  background-color: rgb(26, 26, 26);
+  &:hover {
+    background-color: rgb(53, 53, 53);
+  }
+}

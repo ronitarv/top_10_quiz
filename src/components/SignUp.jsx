@@ -5,6 +5,7 @@ import { Store } from "react-notifications-component";
 import { errorNotification, warningNotification } from "../utils/helper";
 import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
+import styles from "../css/Signin.module.css";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -42,13 +43,15 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className={styles.body}>
       <h2>Sign up</h2>
-      <form onSubmit={onSignup}>
-        <div>username: <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} /></div>
-        <div>password: <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></div>
-        <button type="submit">sign up</button>
-      </form>
+      <div className={styles.container}>
+        <form onSubmit={onSignup}>
+          <div><input type="text" placeholder="username" value={username} onChange={(event) => setUsername(event.target.value)} /></div>
+          <div><input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /></div>
+          <button style={{ "marginBottom": "20px" }}type="submit">sign up</button>
+        </form>
+      </div>
     </div>
   );
 };

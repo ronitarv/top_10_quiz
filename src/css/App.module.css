@@ -40,12 +40,13 @@
   position: absolute;
   right: 0;
   margin-right: 100px;
-  background-color: rgba(255, 255, 255, 0.103);
+  background-color: rgb(46, 46, 46);
   border-radius: 10px;
   list-style: none;
   font-size: 20px;
   text-align: start;
   width: 150px;
+  z-index: 99;
 }
 
 .dropMenu em {

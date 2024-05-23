@@ -16,10 +16,13 @@ mongoose.connect(process.env.MONGODB_URI);
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static("dist"));
+
 app.use("/api/quizzes", middleware.userExtractor, quizzesRouter);
 app.use("/api/user", middleware.userExtractor, usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/sessions", middleware.userExtractor, sessionsRouter);
+
 
 app.get("/health", (req, res) => {
   res.send("Hello World!");

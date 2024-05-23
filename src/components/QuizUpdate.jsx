@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateQuiz } from "../reducers/quizReducer";
 import { Store } from "react-notifications-component";
 import { errorNotification, warningNotification } from "../utils/helper";
+import styles from "../css/QuizForm.module.css";
 
 const QuizUpdate = () => {
   const dispatch = useDispatch();
@@ -50,13 +51,17 @@ const QuizUpdate = () => {
   };
 
   return (
-    <div>
-      <h2>Update Quiz</h2>
-      <form onSubmit={onSubmit}>
-        question: <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} />
-        {answers.map((answer, index) => (
-          <div key={index+1}>{index+1}.<input type="text" value={answer} onChange={(e) => onAnswer(e.target.value, index)} /></div>
-        ))}
+    <div className={styles.body}>
+      <h2>Update quiz</h2>
+      <form className={styles.container} onSubmit={onSubmit}>
+        <ol>
+          <li className={styles.question}><input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} /></li>
+          <div className={styles.answers}>
+            {answers.map((answer, index) => (
+              <li key={index+1}><input type="text" value={answer} onChange={(e) => onAnswer(e.target.value, index)} /></li>
+            ))}
+          </div>
+        </ol>
         <button type="submit">update</button>
       </form>
     </div>

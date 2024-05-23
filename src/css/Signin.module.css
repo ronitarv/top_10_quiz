@@ -1,0 +1,55 @@
+:root {
+  --input-background: rgba(57, 63, 84, 0.8);
+  --input-text-inactive: #7881A1;
+  --input-text-active: #BFD2FF;
+}
+
+.body h2 {
+  font-size: 60px;
+}
+
+.body {
+  text-align: center;
+  margin-top: 10svb;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+  max-width: fit-content;
+  padding: 1px 50px 30px 50px;
+  margin-inline: auto;
+  background-color: rgba(48, 48, 48, 0.26);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 1px rgb(123, 52, 255);
+}
+
+.container input {
+  border-style: none;
+  background-color: var(--input-background);
+  outline: none;
+  /* flex-grow: 1; */
+  color: var(--input-text-active);
+  font-size: 20px;
+  width: 500px;
+  line-height: 70px;
+  font-size: 40px;
+  margin: 15px;
+  vertical-align: middle;
+  &::-webkit-input-placeholder {
+    color: var(--input-text-inactive);
+  }
+}
+
+.container button {
+  border: none;
+  border-radius: 8px;
+  width: 500px;
+  height: fit-content;
+  font-size:50px;
+  margin: 50px;
+  padding: 7px;
+  color: white;
+  background-color: rgb(123, 52, 255);
+  &:hover {
+    background-color: rgba(123, 52, 255, 0.596);
+  }
+}

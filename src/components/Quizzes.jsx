@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import quizService from "../services/quizzes";
 import { deleteQuiz } from "../reducers/quizReducer";
+import styles from "../css/Quizzes.module.css";
 
 const Quizzes = ({ handleSelect }) => {
   const dispatch = useDispatch();
@@ -18,25 +19,29 @@ const Quizzes = ({ handleSelect }) => {
 
   return (
     <div>
-      <h1>quizzes</h1>
-      {user && <Link to={"/quizzes/create"}><button>Create new</button></Link>}
-      <h2>My quizzes</h2>
-      <ul>
+      <div className={styles.header}>
+        <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }}><h1>Quizzes</h1></div>
+        {user && <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }}><Link to={"/quizzes/create"}><button>Create new</button></Link></div>}
+      </div>
+      <h2 style={{ "marginTop": "0px" }}>My quizzes</h2>
+      <div className={styles.quizzes}>
         {quizzes.filter(q => q.user.id === user.id).map(quiz => (
-          <li key={quiz.question}>
-            <div>{quiz.question}</div>
-            <ul></ul>
-            {quiz.answers &&
-            <ol>
-              {quiz.answers.map((answer, index) => (
-                <li key={index + answer}>{answer}</li>
-              ))}
-            </ol>}
-            {handleSelect && <button onClick={() => handleSelect(quiz)}>Select</button>}
-            <button onClick={() => removeQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link>
-          </li>
+          <div key={quiz.question} className={styles.quiz}>
+            <button className={styles.select} onClick={handleSelect ? () => handleSelect(quiz) : null}>
+              <h2>{quiz.question}</h2>
+              {quiz.answers &&
+              <ol>
+                {quiz.answers.map((answer, index) => (
+                  <li key={index + answer}>{answer}</li>
+                ))}
+              </ol>}
+            </button>
+            <div className={styles.optionButtons}>
+              <button onClick={() => removeQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
       <h2>Others quizzes</h2>
       <ul>
         {quizzes.filter(q => q.user.id !== user.id).map(quiz => (

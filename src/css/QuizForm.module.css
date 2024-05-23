@@ -1,0 +1,96 @@
+:root {
+  --input-background: rgba(57, 63, 84, 0.8);
+  --input-text-inactive: #7881A1;
+  --input-text-active: #BFD2FF;
+}
+
+.body h2 {
+  font-size: 45px;
+}
+
+.body {
+  text-align: center;
+  margin-top: 9svb;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+  /* max-width: fit-content; */
+  padding: 1px 50px 20px 50px;
+  margin-inline: auto;
+  background-color: rgba(48, 48, 48, 0.26);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 1px rgb(123, 52, 255);
+  font-size: 30px;
+  min-width: 200px;
+  max-width: 700px;
+  counter-increment: item;
+}
+
+.question {
+  display: block;
+  margin-bottom: .5em;
+  margin-left: 2em;
+  counter-increment: none;
+  margin-bottom: 3px;
+}
+
+.question::before {
+  display: inline-block;
+  content: "Q.";
+  width: 2em;
+  margin-left: -2em;
+}
+
+.answers li {
+  display: block;
+  margin-bottom: .5em;
+  margin-left: 2em;
+  margin-bottom: 1px;
+}
+
+.answers li::before {
+  display: inline-block;
+  content: counter(item) ". ";
+  counter-increment: item;
+  width: 2em;
+  margin-left: -2em;
+}
+
+.container ol {
+  counter-reset: item;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.container input {
+  border-style: none;
+  background-color: var(--input-background);
+  outline: none;
+  color: var(--input-text-active);
+  font-size: 20px;
+  max-width: 500px;
+  width: 80%;
+  min-width: 200px;
+  line-height: 40px;
+  font-size: 25px;
+  margin: 5px;
+  vertical-align: middle;
+  &::-webkit-input-placeholder {
+    color: var(--input-text-inactive);
+  }
+}
+
+.container button {
+  border: none;
+  border-radius: 8px;
+  width: 500px;
+  height: fit-content;
+  font-size:40px;
+  margin: 5px;
+  padding: 7px;
+  color: white;
+  background-color: rgb(123, 52, 255);
+  &:hover {
+    background-color: rgba(123, 52, 255, 0.596);
+  }
+}
