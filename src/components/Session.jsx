@@ -6,6 +6,7 @@ import { warningNotification } from "../utils/helper";
 import { Store } from "react-notifications-component";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSession } from "../reducers/sessionReducer";
+import { BiLoaderCircle } from "react-icons/bi";
 import styles from "../css/Session.module.css";
 
 function useInterval(callback, delay) {
@@ -107,7 +108,10 @@ const Session = ({ removeSession }) => {
       );
     } else {
       return (
-        <div>changing quiz</div>
+        <div className={styles.changeDiv}>
+          <div>changing quiz</div>
+          <BiLoaderCircle className={styles.loadingIcon} />
+        </div>
       );
     }
   }
