@@ -1,9 +1,3 @@
-:root {
-  --input-background: rgba(57, 63, 84, 0.8);
-  --input-text-inactive: #7881A1;
-  --input-text-active: #BFD2FF;
-}
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -16,13 +10,13 @@
 .refreshButton {
   background: none;
   border: none;
-  margin: 0;
-  padding: 0;
+  margin: 0rem;
+  padding: 0rem;
 }
 
 .refreshIcon {
-  color: rgb(0, 195, 255);
-  font-size: 40px;
+  color: var(--light-blue);
+  font-size: 4rem;
 }
 
 .spin {
@@ -36,22 +30,22 @@
 }
 
 .session {
-  background-color: rgba(128, 128, 128, 0.158);
-  border: solid 1px rgba(0, 68, 146, 1);
-  box-shadow: 0px 0px 10px 0px rgba(0, 68, 146, 1);
-  margin: 10px;
-  border-radius: 5px;
-  padding: 10px 20px;
+  background-color: var(--dark-gray);
+  border: solid 1px var(--blue);
+  box-shadow: 0rem 0rem 0.8rem 0rem var(--blue);
+  margin: 0.8rem;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.2rem;
   flex: 1;
   min-width: fit-content;
-  font-size: 20px;
+  font-size: 1.3rem;
   text-decoration: none;
   color: white;
-  max-width: 300px;
+  max-width: 18rem;
 }
 
 .session:hover {
-  box-shadow: 0px 0px 20px 5px rgba(0, 68, 146, 1);
+  box-shadow: 0rem 0rem 1.2rem 0.3rem var(--blue);
 }
 
 .session div {
@@ -69,22 +63,22 @@
   display: flex;
   flex-direction: row;
   justify-content: left;
-  min-width: 200px;
-  max-width: 400px;
-  height: 25px;
-  border-radius: 2px;
-  padding: 1.4px 2px 1.6px;
+  min-width: 12rem;
+  max-width: 25rem;
+  height: 2rem;
+  border-radius: 0.2rem;
+  padding: 0.1rem 0.2rem 0.3rem;
   background-color: var(--input-background);
   &:after {
     content: "";
     position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    z-index: 2;
-    height: 2px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
+    left: 0rem;
+    right: 0rem;
+    bottom: 0rem;
+    z-index: 0;
+    height: 0.15rem;
+    border-bottom-left-radius: 0.2rem;
+    border-bottom-right-radius: 0.2rem;
     background-position: 0% 0%;
     background: linear-gradient(to right, #0051ff, #5900ff, #b700ff, #00e1ff, #0051ff, #5900ff);
     background-size: 500% auto;
@@ -98,9 +92,8 @@
   outline: none;
   /* flex-grow: 1; */
   color: var(--input-text-active);
-  font-size: 20px;
+  font-size: 1.3rem;
   width: 90%;
-  line-height: 90px;
   vertical-align: middle;
   &::-webkit-input-placeholder {
     color: var(--input-text-inactive);
@@ -113,8 +106,8 @@
   border: none;
   outline: none;
   color:  var(--input-text-inactive);
-  font-size: 25px;
-  line-height: 20px;
+  font-size: 2.3rem;
+  line-height: 1rem;
   vertical-align: middle;
   transition: color .25s;
   &:hover {

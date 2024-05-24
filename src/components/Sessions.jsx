@@ -45,15 +45,15 @@ const Sessions = () => {
 
   return (
     <div>
-      <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px", "justifyContent": "space-between", "flexWrap": "wrap" }} >
-        <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }} >
+      <div style={{ "display": "flex", "alignItems": "center", "gap": "0.6rem", "fontSize": "1.7rem", "justifyContent": "space-between", "flexWrap": "wrap" }} >
+        <div style={{ "display": "flex", "alignItems": "center", "gap": "0.6rem", "fontSize": "1.7rem" }} >
           <h1>Sessions</h1>
           <button className={styles.refreshButton} onClick={refetchSessions}>
             <IoMdRefresh className={`${styles.refreshIcon} ${refresh ? styles.spin : ""}`} onAnimationEnd={() => setRefresh(false)} />
           </button>
         </div>
         {role === "host" && user &&
-          <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "20px" }} >
+          <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "1.5rem" }} >
             <h3>Create new</h3>
             <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
               <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -66,18 +66,18 @@ const Sessions = () => {
         ?
         <div>
           {/* </form> */}
-          <h2>My sessions</h2>
+          <h2 style={{ "fontSize": "2rem", "textAlign": "center" }}>My sessions</h2>
           <div className={styles.sessions}>
             {sessions.filter(s => s.user.id === user.id).map(session => (
               <div key={session.name} className={styles.session}>
                 <Link style={{ "textDecoration": "none" }} to={`/sessions/${session.id}`}>
-                  <div style={{ "fontSize": "30px" }}>{session.name}</div>
+                  <div style={{ "fontSize": "3rem" }}>{session.name}</div>
                   <div>host: {session.user.username}</div>
                 </Link>
               </div>
             ))}
           </div>
-          <h2>Others sessions</h2>
+          <h2 style={{ "fontSize": "2rem", "textAlign": "center" }}>Others sessions</h2>
           <div className={styles.sessions}>
             {sessions.filter(s => s.user.id !== user.id).map(session => (
               <div key={session.name} className={styles.session}>

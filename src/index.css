@@ -1,6 +1,39 @@
+:root {
+  --purple: rgb(123, 52, 255);
+  --purple-hover: rgba(123, 52, 255, 0.596);
+  --host-color: rgba(0, 255, 76, 0.8);
+  --player-color: rgba(255, 136, 0, 0.8);
+  --dark-gray-blank: rgba(37, 37, 37, 1);
+  --dark-gray-blank-hover: rgb(63, 63, 63);
+  --dark-gray: rgba(37, 37, 37, 0.274);
+  --dark-gray-hover: rgba(95, 95, 95, 0.3);
+  --light-blue: rgb(0, 195, 255);
+  --blue: rgba(28, 51, 255, 0.753);
+  --input-background: rgba(57, 63, 84, 0.8);
+  --input-text-inactive: #7881A1;
+  --input-text-active: #BFD2FF;
+}
+
 body {
   background-image: url("./assets/background.jpg");
   color: white;
   height: 100%;
-  margin: 10px 30px
 }
+
+@media only screen and (min-width: 1001px) {
+  html {
+    font-size: 16px;
+  }
+  body {
+    margin: 2rem 2rem;
+  }
+ }
+
+@media only screen and (max-width: 1000px) {
+  html {
+    font-size: 9px
+  }
+  body {
+    margin: 2.5rem 1rem;
+  }
+ }

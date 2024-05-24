@@ -1,37 +1,24 @@
-:root {
-  --input-background: rgba(57, 63, 84, 0.8);
-  --input-text-inactive: #7881A1;
-  --input-text-active: #BFD2FF;
-}
-
 .body h2 {
-  font-size: 45px;
+  font-size: 3rem;
 }
 
 .body {
   text-align: center;
-  margin-top: 9svb;
+  margin: 5rem 2rem 0rem 2rem;
   align-items: center;
   justify-content: center;
-  background-color: gray;
-  /* max-width: fit-content; */
-  padding: 1px 50px 20px 50px;
-  margin-inline: auto;
-  background-color: rgba(48, 48, 48, 0.26);
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px 1px rgb(123, 52, 255);
-  font-size: 30px;
-  min-width: 200px;
-  max-width: 700px;
-  counter-increment: item;
+  padding: 1rem 2rem 1.5rem 2rem;
+  background-color: var(--dark-gray);
+  border-radius: 1rem;
+  box-shadow: 0rem 0rem 1.5rem 0.2rem var(--purple);
+  font-size: 3rem;
 }
 
 .question {
   display: block;
-  margin-bottom: .5em;
   margin-left: 2em;
   counter-increment: none;
-  margin-bottom: 3px;
+  margin-bottom: 0.1rem;
 }
 
 .question::before {
@@ -45,7 +32,7 @@
   display: block;
   margin-bottom: .5em;
   margin-left: 2em;
-  margin-bottom: 1px;
+  margin-bottom: 0.1rem;
 }
 
 .answers li::before {
@@ -58,22 +45,20 @@
 
 .container ol {
   counter-reset: item;
-  margin-left: 0;
-  padding-left: 0;
+  margin-left: 0rem;
+  padding-left: 0rem;
 }
 
 .container input {
+  border-radius: 1rem;
   border-style: none;
   background-color: var(--input-background);
   outline: none;
   color: var(--input-text-active);
-  font-size: 20px;
-  max-width: 500px;
-  width: 80%;
-  min-width: 200px;
-  line-height: 40px;
-  font-size: 25px;
-  margin: 5px;
+  font-size: 2.5rem;
+  width: 75%;
+  line-height: 4.5rem;
+  margin: 1rem;
   vertical-align: middle;
   &::-webkit-input-placeholder {
     color: var(--input-text-inactive);
@@ -82,15 +67,15 @@
 
 .container button {
   border: none;
-  border-radius: 8px;
-  width: 500px;
+  border-radius: 0.5rem;
+  width: 75%;
   height: fit-content;
-  font-size:40px;
-  margin: 5px;
-  padding: 7px;
+  font-size:3rem;
+  margin: 0.3rem;
+  padding: 0.5rem;
   color: white;
-  background-color: rgb(123, 52, 255);
+  background-color: var(--purple);
   &:hover {
-    background-color: rgba(123, 52, 255, 0.596);
+    background-color: var(--purple-hover);
   }
 }

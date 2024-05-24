@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const userRouter = require("express").Router();
 const User = require("../models/user");
+const Quiz = require("../models/quiz");
+const Session = require("../models/session");
 
 userRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
@@ -35,6 +37,8 @@ userRouter.delete("/:id", async (request, response) => {
   if (!(user.id.toString() === request.params.id)) {
     return response.status(401).json({ error: "invalid token" });
   }
+  await Session.deleteMany({ user: user.id });
+  await Quiz.deleteMany({ user: user.id });
   await User.findByIdAndDelete(request.params.id);
   return response.status(204).end();
 });

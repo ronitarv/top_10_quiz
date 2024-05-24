@@ -8,7 +8,7 @@ import Sessions from "./components/Sessions";
 import Session from "./components/Session";
 import RoleSelect from "./components/RoleSelect";
 import quizService from "./services/quizzes";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 //import "./css/Notification.css";
@@ -19,11 +19,11 @@ import { setUser } from "./reducers/userReducer";
 import { setRole } from "./reducers/roleReducer";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./css/App.module.css";
-import { SlUser } from "react-icons/sl";
 import { SlHome } from "react-icons/sl";
 import { SlLogin } from "react-icons/sl";
 import { SlLogout } from "react-icons/sl";
 import { MdDeleteOutline } from "react-icons/md";
+import { LuUserCircle2 } from "react-icons/lu";
 
 
 
@@ -36,6 +36,7 @@ const App = () => {
   //const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
+  const [dropMenu, setDropMenu] = useState(false);
 
   useEffect(() => {
     quizService.getQuizzes()
@@ -97,8 +98,8 @@ const App = () => {
 
   if (!role) {
     return (
-      <div>
-        <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/">Start</NavLink>
+      <div style={{ "fontSize": "2.5rem" }}>
+        <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/"><SlHome /></NavLink>
         <RoleSelect />
       </div>
     );
@@ -114,11 +115,11 @@ const App = () => {
           {role && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/sessions">Sessions</NavLink>}
           {role === "host" && user && <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/quizzes">Quizzes</NavLink>}
         </div>
-        {role !== "player" && (role === "host" && user ?
-          <div className={styles.user}>
+        {role === "host" && (role === "host" && user ?
+          <div className={styles.user} onMouseLeave={() => setDropMenu(false)}>
             {/* // <li> */}
-            <div><SlUser /><label style={{ "paddingLeft": "10px" }}>User</label></div>
-            <div className={styles.dropMenu}>
+            <div style={{ "fontSize": "3.5rem" }}><LuUserCircle2 onClick={() => setDropMenu(!dropMenu)} onMouseEnter={() => setDropMenu(true)}/></div>
+            {dropMenu && <div className={styles.dropMenu}>
 
               <div>
                 <div style={{ "textAlign": "center", "paddingTop": "5px" }}><em>{user.username}</em></div>
@@ -129,7 +130,7 @@ const App = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div>}
           </div>
           : <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/signin"><SlLogin /> sign in</NavLink>)
         }

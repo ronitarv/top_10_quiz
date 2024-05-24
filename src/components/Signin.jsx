@@ -25,7 +25,7 @@ const Signin = () => {
       navigate("/sessions");
       //Store.addNotification(successNotification("Signin", `Signed in as "${user.username}"`));
     } catch (error) {
-      Store.addNotification(errorNotification("Signin", "Username or password is incorrect"));
+      Store.addNotification(errorNotification("Sign in", "Username or password is incorrect"));
     }
     setUsername("");
     setPassword("");
@@ -40,7 +40,7 @@ const Signin = () => {
           <div><input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /></div>
           <button type="submit">sign in</button>
         </form>
-        <div style={{ "padding": "10px", "fontSize": "30px", "textDecoration": "none" }}>No account? <Link style={{ "textDecoration": "none", color: "#0000FF" }}to="/signup">Sign up</Link></div>
+        <div style={{ "paddingTop": "2rem", "fontSize": "2.5rem", "textDecoration": "none" }}>No account? <Link style={{ "textDecoration": "none", color: "#0000FF" }}to="/signup">Sign up</Link></div>
       </div>
     </div>
   );

@@ -1,37 +1,45 @@
 .navbar {
   display: flex;
-  justify-content:space-between;
-  height: 2svh;
-  font-size: 30px;
+  justify-content: space-between;
+  height: 3svh;
+  font-size: 2.5rem;
   z-index: 99;
-  margin-bottom: 40px;
-  gap: 50px
+  margin-bottom: 2rem;
+  vertical-align: middle;
+  align-items: center;
+  margin-top: 1.5rem;
 }
 
 .options {
   display: flex;
   background-color: rgba(0, 0, 0, 0);
   list-style: none;
-  gap: 30px;
+  gap: 1rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .option, .activeOption {
-  padding: 10px;
+  padding: 0.6rem;
   color: white;
   text-decoration: none;
-  font-size: 30px;
+  /* font-size: 30px; */
   font-family: 'Segoe UI';
   font-weight: 1000;
 }
 
 .user {
-  margin-right: 40px;
-  padding: 20px;
+  margin-right: 0.3rem;
+  padding: 1rem;
   color: white;
   text-decoration: none;
-  font-size: 30px;
+  /* font-size: 30px; */
   font-family: 'Segoe UI';
   font-weight: 1000;
+  vertical-align: bottom;
+  text-align: end;
+  align-items: center;
 }
 
 .dropMenu {
@@ -39,18 +47,18 @@
   visibility: hidden;
   position: absolute;
   right: 0;
-  margin-right: 100px;
-  background-color: rgb(46, 46, 46);
+  margin-right: 2rem;
+  background-color: var(--dark-gray-blank);
   border-radius: 10px;
   list-style: none;
-  font-size: 20px;
-  text-align: start;
-  width: 150px;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 13rem;
   z-index: 99;
 }
 
 .dropMenu em {
-  font-size: 20px;
+  font-size: 2rem;
 }
 
 .user:hover .dropMenu {
@@ -59,37 +67,37 @@
 }
 
 .activeOption {
-  color: rgb(0, 195, 255);
+  color: var(--light-blue);
 }
 
-.button {
-  background-color: rgba(0, 0, 0, 0);
+.dropMenu .button {
+  background-color: var(--dark-gray-blank);
   border: none;
   margin: 0;
   padding: 0;
   cursor: pointer;
   color: white;
-  font-size: 15px;
+  font-size: 1.5rem;
   width: 100%;
   text-align: start;
-  padding-left: 10px;
+  padding-left: 0.7rem;
+  border-radius: 1rem;
 }
 
-.button:hover {
-  background: rgba(0, 0, 0, 1);
+.dropMenu .button:hover {
+  background: var(--dark-gray-blank-hover);
 }
 
-.table {
+.dropMenu .table {
   border-collapse: collapse;
   width: 100%;
-  padding-top: 1000px;
-  margin-top: 10px
+  margin-top: 0.7rem;
 }
 
-.table tr {
-  border-top: 1px solid;
+.dropMenu .table tr {
+  border-top: 0.1rem solid;
 }
 
-.table td {
+.dropMenu .table td {
   vertical-align: center;
 }

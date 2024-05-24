@@ -1,38 +1,28 @@
-:root {
-  --input-background: rgba(57, 63, 84, 0.8);
-  --input-text-inactive: #7881A1;
-  --input-text-active: #BFD2FF;
-}
-
 .body h2 {
-  font-size: 60px;
+  font-size: 5rem;
 }
 
 .body {
   text-align: center;
-  margin-top: 10svb;
+  margin: 5rem 2rem 0rem 2rem;
   align-items: center;
   justify-content: center;
-  background-color: gray;
-  max-width: fit-content;
-  padding: 1px 50px 30px 50px;
-  margin-inline: auto;
-  background-color: rgba(48, 48, 48, 0.26);
-  border-radius: 10px;
-  box-shadow: 0px 0px 20px 1px rgb(123, 52, 255);
+  padding: 1rem 2rem 1.5rem 2rem;
+  background-color: var(--dark-gray);
+  border-radius: 1rem;
+  box-shadow: 0rem 0rem 1.5rem 0.2rem var(--purple);
 }
 
 .container input {
+  border-radius: 1rem;
   border-style: none;
   background-color: var(--input-background);
   outline: none;
-  /* flex-grow: 1; */
   color: var(--input-text-active);
-  font-size: 20px;
-  width: 500px;
-  line-height: 70px;
-  font-size: 40px;
-  margin: 15px;
+  font-size: 3.5rem;
+  width: 75%;
+  line-height: 7.5rem;
+  margin: 1rem;
   vertical-align: middle;
   &::-webkit-input-placeholder {
     color: var(--input-text-inactive);
@@ -41,15 +31,15 @@
 
 .container button {
   border: none;
-  border-radius: 8px;
-  width: 500px;
+  border-radius: 1rem;
+  width: 75%;
   height: fit-content;
-  font-size:50px;
-  margin: 50px;
+  font-size:4rem;
+  margin-top: 3rem;
   padding: 7px;
   color: white;
-  background-color: rgb(123, 52, 255);
+  background-color: var(--purple);
   &:hover {
-    background-color: rgba(123, 52, 255, 0.596);
+    background-color: var(--purple-hover);
   }
 }
