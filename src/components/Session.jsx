@@ -36,6 +36,7 @@ const Session = ({ removeSession }) => {
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
   const [session, setSession] = useState(null);
+  const [newAnswers, setNewAnswers] = useState([]);
 
   const id = useParams().id;
   useEffect(() => {
@@ -54,6 +55,7 @@ const Session = ({ removeSession }) => {
     if (session && (!user || session.user.id !== user.id || role === "player")) {
       quizService.getSession(id)
         .then(s => {
+          setNewAnswers(s.answers.map((a, index) => !session.answers.includes(a) ? index : null).filter(a => a !== null));
           setSession(s);
         })
         .catch(() => {
@@ -114,7 +116,7 @@ const Session = ({ removeSession }) => {
         <div className={styles.playerAnswers}>
           <ol>
             {session.answers.map((answer, index) => (
-              <li key={index}>{answer}</li>
+              <li key={index} className={newAnswers.includes(index) ? styles.new : styles.notNew}>{answer}</li>
             ))}
           </ol>
         </div>

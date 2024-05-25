@@ -80,3 +80,67 @@
     background-color: rgb(53, 53, 53);
   }
 }
+
+@keyframes borderBlink {  
+  /* 100% {
+		transform: rotate(1turn);
+	}   */
+  from, to {    
+    border: solid 3px;
+  }
+  50% {
+    border: solid 10px red;
+  }
+  /* 25% {    
+    border: solid 0.1rem yellow;
+    box-shadow: 0rem 0rem 10rem 100rem yellow
+  }     
+  50% {    
+    border: solid 0.1rem green;
+    box-shadow: 0rem 0rem 10rem 100rem green
+  }
+  75% {    
+    border: solid 0.1rem white;
+    box-shadow: 0rem 0rem 10rem 100rem white
+  }    */
+}    
+
+.new {
+  position: relative;
+  margin: auto;
+  text-align: center;
+  
+  &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 3px solid gold;
+      /* transition: all 10s; */
+      animation: clippath 0.5s infinite linear;
+  }
+}
+
+@keyframes clippath {
+  0%,
+  100% {
+      clip-path: inset(0 0 100% 0);
+  }
+  
+  25% {
+      clip-path: inset(0 100% 0 0);
+  }
+  50% {
+      clip-path: inset(100% 0 0 0);
+  }
+  75% {
+      clip-path: inset(0 0 0 100%);
+  }
+}
+
+
+/* .notNew {
+  box-shadow: 0rem 0rem 4rem 0.01rem;
+} */
