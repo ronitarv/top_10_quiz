@@ -27,7 +27,6 @@ userRouter.post("/", async (request, response) => {
       response.status(201).json(savedUser);
     })
     .catch((error) => {
-      console.log("error", error);
       response.status(400).json({ error: error._message === "User validation failed" ? "The username is taken" : error });
     });
 });

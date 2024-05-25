@@ -24,7 +24,6 @@ const Signup = () => {
       navigate("/sessions");
       setUsername("");
       setPassword("");
-      //Store.addNotification(successNotification("Sign up", `Signed up as "${user.username}"`));
     } catch (error) {
       Store.addNotification(errorNotification("Sign up", "Signing in to created user failed"));
     }
@@ -37,7 +36,6 @@ const Signup = () => {
         handleLogin(username, password);
       })
       .catch((error) => {
-        //console.log(error);
         Store.addNotification(warningNotification("Sign up", error.response.data.error));
       });
   };

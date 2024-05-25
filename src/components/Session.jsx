@@ -39,13 +39,11 @@ const Session = ({ removeSession }) => {
 
   const id = useParams().id;
   useEffect(() => {
-    console.log("useEffect");
     quizService.getSession(id)
       .then(s => {
         setSession(s);
       })
       .catch(() => {
-        console.log("error effect");
         Store.addNotification(warningNotification("Session", "The session was deleted"));
         dispatch(deleteSession(id));
         navigate("/sessions");
@@ -59,7 +57,6 @@ const Session = ({ removeSession }) => {
           setSession(s);
         })
         .catch(() => {
-          console.log("error polling");
           Store.addNotification(warningNotification("Session", `The session "${session.name}" was deleted`));
           dispatch(deleteSession(id));
           navigate("/sessions");

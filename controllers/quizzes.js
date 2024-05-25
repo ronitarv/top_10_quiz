@@ -20,8 +20,6 @@ quizzesRouter.post("/", async (request, response) => {
     .then(async () => {
       const quiz = new Quiz({ ...request.body, user: user._id });
       const savedQuiz = await quiz.save();
-      //user.blogs = user.quizzes.concat(savedQuiz._id);
-      //await user.save();
       response.status(201).json(await savedQuiz.populate("user", { username: 1, name: 1 }));
     })
     .catch((error) => {

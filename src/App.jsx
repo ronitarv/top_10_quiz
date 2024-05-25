@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, useLocation, NavLink } from "react-router-dom";
+import { Routes, Route, useNavigate, NavLink } from "react-router-dom";
 import Signin from "./components/Signin";
 import Signup from "./components/SignUp";
 import Quizzes from "./components/Quizzes";
@@ -11,8 +11,6 @@ import quizService from "./services/quizzes";
 import { useState, useEffect } from "react";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
-//import "./css/Notification.css";
-//import { Store } from "react-notifications-component";
 import { setQuizzes } from "./reducers/quizReducer";
 import { setSessions, deleteSession } from "./reducers/sessionReducer";
 import { setUser } from "./reducers/userReducer";
@@ -30,10 +28,6 @@ import { LuUserCircle2 } from "react-icons/lu";
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
-  console.log(location.pathname);
-  //const quizzes = useSelector(state => state.quizzes);
-  //const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
   const [dropMenu, setDropMenu] = useState(false);
@@ -69,7 +63,6 @@ const App = () => {
 
 
   const handleLogout = () => {
-    //Store.addNotification(successNotification("Logout", `Logged out from "${user.username}"`));
     dispatch(setUser(null));
     dispatch(setRole(null));
     window.localStorage.removeItem("top10QuizAppRole");
@@ -81,7 +74,6 @@ const App = () => {
   const removeSession = (session) => {
     if (window.confirm(`Are you sure you want to remove the session: ${session.name}`)) {
       quizService.deleteSession(session.id).then(() => {
-        //Store.addNotification(successNotification("Session", `Deleted session "${session.name}"`));
         dispatch(deleteSession(session.id));
       });
       return true;
@@ -108,7 +100,6 @@ const App = () => {
   return (
     <div>
       <ReactNotifications />
-      {/* {location.pathname !== "/" && */}
       <div className={styles.navbar}>
         <div className={styles.options}>
           <NavLink className={({ isActive }) => isActive ? styles.activeOption : styles.option} to="/"><SlHome /></NavLink>
@@ -117,7 +108,6 @@ const App = () => {
         </div>
         {role === "host" && (role === "host" && user ?
           <div className={styles.user} onMouseLeave={() => setDropMenu(false)}>
-            {/* // <li> */}
             <div style={{ "fontSize": "3.5rem" }}><LuUserCircle2 onClick={() => setDropMenu(!dropMenu)} onMouseEnter={() => setDropMenu(true)}/></div>
             {dropMenu && <div className={styles.dropMenu}>
 

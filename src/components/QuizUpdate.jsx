@@ -11,11 +11,8 @@ const QuizUpdate = () => {
   const dispatch = useDispatch();
   const quizzes = useSelector(state => state.quizzes);
   const id = useParams().id;
-  console.log("id", id);
   const quiz = quizzes.find(q => q.id === id);
-  console.log("quiz", quiz);
   const navigate = useNavigate();
-  //const history = useHistory();
 
   const [question, setQuestion] = useState(quiz && quiz.question ? quiz.question : "");
   const [answers, setAnswers] = useState(quiz && quiz.answers ? quiz.answers : ["", "", "", "", "", "", "", "", "", ""]);

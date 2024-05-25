@@ -23,19 +23,6 @@ const RoleSelect = () => {
     }
   };
 
-  // const onRoleSelect = (role) => {
-  //   handleSetRole(role);
-  //   if (role === "host") {
-  //     if (user) {
-  //       navigate("/sessions");
-  //     } else {
-  //       navigate("/signin");
-  //     }
-  //   } else {
-  //     navigate("/sessions");
-  //   }
-  // };
-
   return (
     <div className={styles.body}>
       <div className={styles.div}>

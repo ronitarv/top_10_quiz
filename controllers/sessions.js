@@ -9,7 +9,6 @@ sessionsRouter.get("/", async (request, response) => {
 sessionsRouter.get("/:id", async (request, response) => {
   const user = request.user;
   const session = await Session.findById(request.params.id);
-  //response.json(await Session.findById(request.params.id).populate("user", {username: 1, name: 1}).populate("quiz", {question: 1})).end();
   if (!session) {
     return response.status(404).json({ error: "session does not exist" });
   }
@@ -69,19 +68,5 @@ sessionsRouter.put("/:id", async (request, response) => {
 
   return response.status(200).json(savedSession);
 });
-
-// sessionsRouter.put("/:id", async (request, response) => {
-//   const user = request.user;
-//   if (!user) {
-//     return response.status(401).json({ error: "invalid token" });
-//   }
-//   const session = await Session.findById(request.params.id);
-//   if (!(user.id.toString() === session.user.toString())) {
-//     return response.status(401).json({ error: "invalid token" });
-//   }
-//   session.answers = request.params.answers;
-//   const savedSession = await session.save();
-//   return response.status(200).json(await savedSession.populate("user", { username: 1 }).populate("quiz", { question: 1, answers: 1 }));
-// });
 
 module.exports = sessionsRouter;

@@ -23,7 +23,6 @@ const Signin = () => {
         window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
       }
       navigate("/sessions");
-      //Store.addNotification(successNotification("Signin", `Signed in as "${user.username}"`));
     } catch (error) {
       Store.addNotification(errorNotification("Sign in", "Username or password is incorrect"));
     }
