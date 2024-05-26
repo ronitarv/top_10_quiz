@@ -29,7 +29,7 @@ function useInterval(callback, delay) {
 }
 
 
-const Session = ({ removeSession }) => {
+const Session = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const quizzes = useSelector(state => state.quizzes);
@@ -37,6 +37,8 @@ const Session = ({ removeSession }) => {
   const role = useSelector(state => state.role);
   const [session, setSession] = useState(null);
   const [newAnswers, setNewAnswers] = useState([]);
+  // let dialog = document.getElementById("dialog");
+  const dialogRef = useRef();
 
   const id = useParams().id;
   useEffect(() => {
@@ -66,6 +68,14 @@ const Session = ({ removeSession }) => {
     }
   }, 5000);
 
+  const removeSession = () => {
+    dialogRef.current?.close();
+    quizService.deleteSession(session.id).then(() => {
+      dispatch(deleteSession(session.id));
+      navigate("/sessions");
+    });
+  };
+
   const handleReveal = (answer, index) => {
     const newSession = { ...session };
     newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
@@ -89,9 +99,11 @@ const Session = ({ removeSession }) => {
   };
 
   const onSessionDelete = () => {
-    if (removeSession(session)) {
-      navigate("/sessions");
-    }
+    // if (!dialog) {
+    //   dialog = document.getElementById("dialog");
+    // }
+    // console.log("dialog", dialog);
+    dialogRef.current?.showModal();
   };
 
   if (!session) {
@@ -109,30 +121,37 @@ const Session = ({ removeSession }) => {
   }
 
   return (
-    <div className={styles.body}>
-      <h3>{session.name}</h3>
-      <h3><i>{session.quiz.question}</i></h3>
-      <div className={styles.container}>
-        <div className={styles.playerAnswers}>
-          <ol>
-            {session.answers.map((answer, index) => (
-              <li key={index} className={newAnswers.includes(index) ? styles.new : styles.notNew}>{answer}</li>
-            ))}
-          </ol>
-        </div>
-        {
-          role === "host" && session.quiz.answers &&
-          <div className={styles.hostAnswers}>
+    <div>
+      <dialog id="dialog" className={styles.dialog} ref={dialogRef}>
+        <h2>Remove session?</h2>
+        <p>Are you sure you want to remove the session &quot;{session.name}&quot;</p>
+        <div className={styles.buttons}><button style={{ "backgroundColor": "#8388a4", "color": "black" }} onClick={() => dialogRef.current?.close()}>Cancel</button><button style={{ "backgroundColor": "#ed5e68", "color": "white" }} onClick={removeSession}>Remove</button></div>
+      </dialog>
+      <div className={styles.body}>
+        <h3>{session.name}</h3>
+        <h3><i>{session.quiz.question}</i></h3>
+        <div className={styles.container}>
+          <div className={styles.playerAnswers}>
             <ol>
-              {session.quiz.answers.map((answer, index) => (
-                <li key={index}><div className={styles.revealDiv}><button className={`${styles.revealButton} ${session.answers[index] !== "?" ? styles.checkedButton : ""}`} onClick={() => handleReveal(answer, index)}>{answer}</button></div></li>
+              {session.answers.map((answer, index) => (
+                <li key={index} className={newAnswers.includes(index) ? styles.new : styles.notNew}>{answer}</li>
               ))}
             </ol>
-            <div className={styles.optionButtons}>
-              <button onClick={handleChange}>Change Quiz</button><button onClick={onSessionDelete}>Delete session</button>
-            </div>
           </div>
-        }
+          {
+            role === "host" && session.quiz.answers &&
+            <div className={styles.hostAnswers}>
+              <ol>
+                {session.quiz.answers.map((answer, index) => (
+                  <li key={index}><div className={styles.revealDiv}><button className={`${styles.revealButton} ${session.answers[index] !== "?" ? styles.checkedButton : ""}`} onClick={() => handleReveal(answer, index)}>{answer}</button></div></li>
+                ))}
+              </ol>
+              <div className={styles.optionButtons}>
+                <button onClick={handleChange}>Change Quiz</button><button onClick={onSessionDelete}>Remove session</button>
+              </div>
+            </div>
+          }
+        </div>
       </div>
     </div>
   );

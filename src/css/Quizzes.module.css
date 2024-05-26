@@ -98,3 +98,28 @@
     font-size: 4rem;
   }
 }
+
+.dialog {
+  background-color: rgba(0, 0, 0, 0.404);
+  backdrop-filter: blur(100px);
+  border: solid 0.1rem var(--blue);
+  box-shadow: 0rem 0rem 1rem 0rem var(--blue);
+  color: white;
+  font-size: 1.5rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  padding-top: 0.5rem;
+  max-width: 70%;
+}
+
+.dialog button {
+  margin: 0.2rem;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.dialog .buttons {
+  text-align: end;
+}

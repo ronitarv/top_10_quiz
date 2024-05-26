@@ -8,11 +8,11 @@ import Sessions from "./components/Sessions";
 import Session from "./components/Session";
 import RoleSelect from "./components/RoleSelect";
 import quizService from "./services/quizzes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ReactNotifications } from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { setQuizzes } from "./reducers/quizReducer";
-import { setSessions, deleteSession } from "./reducers/sessionReducer";
+import { setSessions } from "./reducers/sessionReducer";
 import { setUser } from "./reducers/userReducer";
 import { setRole } from "./reducers/roleReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,13 +24,14 @@ import { MdDeleteOutline } from "react-icons/md";
 import { LuUserCircle2 } from "react-icons/lu";
 
 
-
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
   const [dropMenu, setDropMenu] = useState(false);
+  const dialogRef = useRef();
+  const [confirmText, setConfirmText] = useState("");
 
   useEffect(() => {
     quizService.getQuizzes()
@@ -71,21 +72,18 @@ const App = () => {
     navigate("/");
   };
 
-  const removeSession = (session) => {
-    if (window.confirm(`Are you sure you want to remove the session: ${session.name}`)) {
-      quizService.deleteSession(session.id).then(() => {
-        dispatch(deleteSession(session.id));
-      });
-      return true;
-    }
-  };
+  const cancelDeleteUser = () => {
+    dialogRef.current?.close();
+    setConfirmText("");
+  }
+
+
 
   const deleteUser = () => {
-    if (window.confirm(`Are you sure you want to PERMANENTLY remove your user: ${user.username}`)) {
-      quizService.deleteUser(user.id).then(() => {
-        handleLogout();
-      });
-    }
+    setConfirmText("");
+    quizService.deleteUser(user.id).then(() => {
+      handleLogout();
+    })
   };
 
   if (!role) {
@@ -97,8 +95,22 @@ const App = () => {
     );
   }
 
+
+
   return (
     <div>
+      <dialog id="dialog" className={styles.dialog} ref={dialogRef}>
+        <h2>Delete user?</h2>
+        <p>Enter the following to confirm you want to PERMANENTLY delete your user &quot;{user?.username}&quot;:<br/>&quot;sudo delete user {user?.username}&quot;</p>
+        <input type="text" value={confirmText} onChange={e => setConfirmText(e.target.value)} />
+        <div className={styles.buttons}>
+          <button style={{ "backgroundColor": "#8388a4", "color": "black" }} onClick={cancelDeleteUser}>Cancel</button>
+          <button style={{ backgroundColor: confirmText === `sudo delete user ${user?.username}` ? "#ed5e68" : "#eaeaea", color: "white" }} 
+                  onClick={confirmText === `sudo delete user ${user?.username}` ? deleteUser : null}>
+            Delete
+          </button>
+          </div>
+      </dialog>
       <ReactNotifications />
       <div className={styles.navbar}>
         <div className={styles.options}>
@@ -116,7 +128,7 @@ const App = () => {
                 <table className={styles.table}>
                   <tbody>
                     <tr><td><button className={styles.button} onClick={handleLogout}><SlLogout /> Logout</button></td></tr>
-                    <tr><td><button className={styles.button} onClick={deleteUser}><MdDeleteOutline /> Delete user</button></td></tr>
+                    <tr><td><button className={styles.button} onClick={() => dialogRef.current?.showModal()}><MdDeleteOutline /> Delete user</button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -130,7 +142,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<RoleSelect />} />
         {role && <Route path="/sessions" element={<Sessions />} />}
-        {role && <Route path="/sessions/:id" element={<Session removeSession={removeSession}/>} />}
+        {role && <Route path="/sessions/:id" element={<Session />} />}
         {role === "host" && user && <Route path="/quizzes" element={<Quizzes/>} />}
         {role === "host" && user && <Route path="/quizzes/create" element={<QuizCreate/>} />}
         {role === "host" && user && <Route path="/quizzes/update/:id" element={<QuizUpdate/>} />}
