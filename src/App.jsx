@@ -33,6 +33,20 @@ const App = () => {
   const dialogRef = useRef();
   const [confirmText, setConfirmText] = useState("");
 
+  const handleLogout = () => {
+    dispatch(setUser(null));
+    dispatch(setRole(null));
+    window.localStorage.removeItem("top10QuizAppRole");
+    quizService.setToken(null);
+    window.localStorage.removeItem("top10QuizAppUser");
+    navigate("/");
+  };
+
+  // window.onbeforeunload = () => {
+  //   console.log("unload");
+  //   handleLogout()
+  // }
+
   useEffect(() => {
     quizService.getQuizzes()
       .then(quizzes => {
@@ -48,12 +62,6 @@ const App = () => {
   }, [user]);
 
   useEffect(() => {
-    const userJson = window.localStorage.getItem("top10QuizAppUser");
-    if (userJson) {
-      const user = JSON.parse(userJson);
-      dispatch(setUser(user));
-      quizService.setToken(user.token);
-    }
     const roleJson = window.localStorage.getItem("top10QuizAppRole");
     if (roleJson) {
       const role = JSON.parse(roleJson);
@@ -61,16 +69,23 @@ const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const userJson = window.localStorage.getItem("top10QuizAppUser");
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      quizService.tokenValid(user.token)
+      .then(({isValid}) => {
+        if (isValid) {
+          dispatch(setUser(user));
+          quizService.setToken(user.token);
+        } else if (role === "host") {
+          navigate("/signin")
+        }
+      })
+    }
+  }, [role])
 
-
-  const handleLogout = () => {
-    dispatch(setUser(null));
-    dispatch(setRole(null));
-    window.localStorage.removeItem("top10QuizAppRole");
-    quizService.setToken(null);
-    window.localStorage.removeItem("top10QuizAppUser");
-    navigate("/");
-  };
+  
 
   const cancelDeleteUser = () => {
     dialogRef.current?.close();

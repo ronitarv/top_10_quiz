@@ -23,7 +23,7 @@ app.use("/", express.static(path.join(__dirname, "/dist")));
 
 app.use("/api/quizzes", middleware.userExtractor, quizzesRouter);
 app.use("/api/user", middleware.userExtractor, usersRouter);
-app.use("/api/login", loginRouter);
+app.use("/api/login", middleware.userExtractor, loginRouter);
 app.use("/api/sessions", middleware.userExtractor, sessionsRouter);
 
 

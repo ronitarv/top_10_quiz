@@ -22,12 +22,19 @@ loginRouter.post("/", async (request, response) => {
   };
 
 
-  const token = jwt.sign(userForToken, process.env.SECRET);
+  const token = jwt.sign(userForToken, process.env.SECRET, {
+    expiresIn: "12h"
+  });
 
 
   response
     .status(200)
     .send({ token, username: user.username, name: user.name, id: user.id });
+});
+
+loginRouter.post("/valid", async (request, response) => {
+  const user = request.user;
+  return user ? response.status(200).json({isValid: true}) : response.status(200).json({isValid: false});
 });
 
 module.exports = loginRouter;

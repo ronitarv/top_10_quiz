@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import quizService from "../services/quizzes";
 import { useDispatch, useSelector } from "react-redux";
 import { createSession, setSessions } from "../reducers/sessionReducer";
@@ -8,9 +8,11 @@ import { errorNotification, warningNotification } from "../utils/helper";
 import { IoMdRefresh } from "react-icons/io";
 import styles from "../css/Sessions.module.css";
 import { IoIosArrowRoundForward } from "react-icons/io";
+import { setUser } from "../reducers/userReducer";
 
 const Sessions = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
@@ -30,7 +32,15 @@ const Sessions = () => {
         dispatch(createSession(session));
         setName("");
       })
-      .catch(() => {
+      .catch((error) => {
+        // if (error.response.status === 401) {
+        //   Store.addNotification(errorNotification("Session expired", "Your sessions has expired, please login to continue"));
+        //   window.localStorage.removeItem("top10QuizAppUser");
+        //   dispatch(setUser(null))
+        //   navigate("/signin")
+        // } else {
+        //   Store.addNotification(errorNotification("Create session", "There was an error creating the session, refreshing the page is recommended"));
+        // }
         Store.addNotification(errorNotification("Create session", "There was an error creating the session, refreshing the page is recommended"));
       });
   };

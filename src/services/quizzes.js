@@ -112,8 +112,16 @@ const login = async credentials => {
   return req.data;
 };
 
+const tokenValid = async token => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  const req = await axios.post(`${loginUrl}/valid`, token, config)
+  return req.data;
+}
+
 export default {
   setToken, getQuizzes, createQuiz, updateQuiz, deleteQuiz,
   getSessions, getSession, createSession, deleteSession,
-  updateSession, createUser, deleteUser, login
+  updateSession, createUser, deleteUser, login, tokenValid
 };
