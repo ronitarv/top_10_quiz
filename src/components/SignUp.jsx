@@ -6,12 +6,14 @@ import { errorNotification, warningNotification } from "../utils/helper";
 import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 import styles from "../css/Signin.module.css";
+import { BiSolidShow } from "react-icons/bi";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const handleLogin = async (username, password) => {
     try {
@@ -46,7 +48,7 @@ const Signup = () => {
       <div className={styles.container}>
         <form onSubmit={onSignup}>
           <div><input type="text" placeholder="username" value={username} onChange={(event) => setUsername(event.target.value)} /></div>
-          <div><input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /></div>
+          <div style={{"verticalAlign": "middle"}}><input type={passwordVisible ? "text" : "password"} placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /><BiSolidShow style={{"fontSize": "50px", "position": "relative", "marginLeft":  "-50px", "top": "21px", "left": "-20px", "zIndex": "2"}} onClick={() => setPasswordVisible(!passwordVisible)} /></div>
           <button style={{ "marginBottom": "20px" }}type="submit">sign up</button>
         </form>
       </div>
