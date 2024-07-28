@@ -51,7 +51,7 @@ const Session = () => {
         dispatch(deleteSession(id));
         navigate("/sessions");
       });
-  }, []);
+  }, [user]);
 
   useInterval(() => {
     if (session && (!user || session.user.id !== user.id || role === "player")) {
@@ -81,9 +81,9 @@ const Session = () => {
     newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
     setSession(newSession);
     quizService.updateSession(newSession)
-      .then(s => {
-        setSession(s);
-      });
+      // .then(s => {
+      //   setSession(s);
+      // });
   };
 
   const handleChange = () => {
@@ -99,10 +99,6 @@ const Session = () => {
   };
 
   const onSessionDelete = () => {
-    // if (!dialog) {
-    //   dialog = document.getElementById("dialog");
-    // }
-    // console.log("dialog", dialog);
     dialogRef.current?.showModal();
   };
 
@@ -128,8 +124,10 @@ const Session = () => {
         <div className={styles.buttons}><button style={{ "backgroundColor": "#8388a4", "color": "black" }} onClick={() => dialogRef.current?.close()}>Cancel</button><button style={{ "backgroundColor": "#ed5e68", "color": "white" }} onClick={removeSession}>Remove</button></div>
       </dialog>
       <div className={styles.body}>
-        <h3>{session.name}</h3>
-        <h3><i>{session.quiz.question}</i></h3>
+        <div style={{"display": "grid", "gridTemplateColumns": "1fr 4fr 1fr"}}>
+        <h3 style={{"textAlign": "left", "fontSize": "2rem"}}>{session.name}</h3>
+        <h3 className={styles.sessionTitle} style={{"textAlign": "center", "margin": "auto"}}><i>{session.quiz.question}</i></h3>
+        </div>
         <div className={styles.container}>
           <div className={styles.playerAnswers}>
             <ol>

@@ -64,7 +64,7 @@ const Sessions = () => {
         </div>
         {role === "host" && user &&
           <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "1.5rem" }} >
-            <h3>Create new</h3>
+            <h2>Create new</h2>
             <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
               <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
               <button type="submit"><IoIosArrowRoundForward /></button>
