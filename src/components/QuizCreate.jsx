@@ -45,7 +45,7 @@ const QuizCreate = () => {
       <h2>Create quiz</h2>
       <form className={styles.container} onSubmit={onSubmit}>
         <ol>
-          <li className={styles.question}><input type="text" value={question} maxLength={100} onChange={(e) => setQuestion(e.target.value)} /></li>
+          <li className={styles.question}><input type="text" value={question} maxLength={200} onChange={(e) => setQuestion(e.target.value)} /></li>
           <div className={styles.answers}>
             {answers.map((answer, index) => (
               <li key={index+1}><input type="text" value={answer} maxLength={100} onChange={(e) => onAnswer(e.target.value, index)} /></li>
