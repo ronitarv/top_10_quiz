@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
   passwordHash: String,
+  savedQuizzes: [String]
 });
 
 userSchema.plugin(uniqueValidator);

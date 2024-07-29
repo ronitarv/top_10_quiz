@@ -80,10 +80,7 @@ const Session = () => {
     const newSession = { ...session };
     newSession.answers[index] = newSession.answers[index] === "?" ? answer : "?";
     setSession(newSession);
-    quizService.updateSession(newSession)
-      // .then(s => {
-      //   setSession(s);
-      // });
+    quizService.updateSession(newSession);
   };
 
   const handleChange = () => {
@@ -124,15 +121,15 @@ const Session = () => {
         <div className={styles.buttons}><button style={{ "backgroundColor": "#8388a4", "color": "black" }} onClick={() => dialogRef.current?.close()}>Cancel</button><button style={{ "backgroundColor": "#ed5e68", "color": "white" }} onClick={removeSession}>Remove</button></div>
       </dialog>
       <div className={styles.body}>
-        <div style={{"display": "grid", "gridTemplateColumns": "1fr 4fr 1fr"}}>
-        <h3 style={{"textAlign": "left", "fontSize": "2rem"}}>{session.name}</h3>
-        <h3 className={styles.sessionTitle} style={{"textAlign": "center", "margin": "auto"}}><i>{session.quiz.question}</i></h3>
+        <div style={{ "display": "grid", "gridTemplateColumns": "1fr 100fr 1fr" }}>
+          <h3 style={{ "textAlign": "left", "fontSize": "2rem" }}>{session.name}</h3>
+          <h3 className={styles.sessionTitle} style={{ "textAlign": "center", "margin": "auto" }}><i>{session.quiz.question}</i></h3>
         </div>
         <div className={styles.container}>
           <div className={styles.playerAnswers}>
             <ol>
               {session.answers.map((answer, index) => (
-                <li key={index} className={newAnswers.includes(index) ? styles.new : styles.notNew}>{answer}</li>
+                <li key={index} className={newAnswers.includes(index) ? styles.new : styles.notNew}><div>{answer}</div></li>
               ))}
             </ol>
           </div>

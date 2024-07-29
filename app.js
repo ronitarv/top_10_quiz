@@ -9,7 +9,7 @@ const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
 const sessionsRouter = require("./controllers/sessions");
 const middleware = require("./utils/middleware");
-const path = require("path")
+const path = require("path");
 
 const port = 3000;
 
@@ -31,8 +31,8 @@ app.get("/health", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get('*', function(req, res) {
-  res.sendFile('index.html', {root: path.join(__dirname, '/dist')});
+app.get("*", function(req, res) {
+  res.sendFile("index.html", { root: path.join(__dirname, "/dist") });
 });
 
 app.use(middleware.errorHandler);

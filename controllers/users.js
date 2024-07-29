@@ -33,13 +33,28 @@ userRouter.post("/", async (request, response) => {
 
 userRouter.delete("/:id", async (request, response) => {
   const user = request.user;
-  if (!(user.id.toString() === request.params.id)) {
+  if (!(user && user.id.toString() === request.params.id)) {
     return response.status(401).json({ error: "invalid token" });
   }
   await Session.deleteMany({ user: user.id });
   await Quiz.deleteMany({ user: user.id });
   await User.findByIdAndDelete(request.params.id);
   return response.status(204).end();
+});
+
+userRouter.put("/:id/save-quiz", async (request, response) => {
+  const user = request.user;
+  if (!(user && user.id.toString() === request.params.id)) {
+    return response.status(401).json({ error: "invalid token" });
+  }
+  const quizId = request.body.quizId;
+  if (user.savedQuizzes.includes(quizId)) {
+    user.savedQuizzes = user.savedQuizzes.filter(q => q !== quizId);
+  } else {
+    user.savedQuizzes.push(quizId);
+  }
+  await user.save();
+  return response.status(200).json({ savedQuizzes: user.savedQuizzes });
 });
 
 module.exports = userRouter;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import quizService from "../services/quizzes";
 import { useDispatch, useSelector } from "react-redux";
 import { createSession, setSessions } from "../reducers/sessionReducer";
@@ -8,11 +8,9 @@ import { errorNotification, warningNotification } from "../utils/helper";
 import { IoMdRefresh } from "react-icons/io";
 import styles from "../css/Sessions.module.css";
 import { IoIosArrowRoundForward } from "react-icons/io";
-import { setUser } from "../reducers/userReducer";
 
 const Sessions = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const sessions = useSelector(state => state.sessions);
   const user = useSelector(state => state.user);
   const role = useSelector(state => state.role);
@@ -32,15 +30,7 @@ const Sessions = () => {
         dispatch(createSession(session));
         setName("");
       })
-      .catch((error) => {
-        // if (error.response.status === 401) {
-        //   Store.addNotification(errorNotification("Session expired", "Your sessions has expired, please login to continue"));
-        //   window.localStorage.removeItem("top10QuizAppUser");
-        //   dispatch(setUser(null))
-        //   navigate("/signin")
-        // } else {
-        //   Store.addNotification(errorNotification("Create session", "There was an error creating the session, refreshing the page is recommended"));
-        // }
+      .catch(() => {
         Store.addNotification(errorNotification("Create session", "There was an error creating the session, refreshing the page is recommended"));
       });
   };
@@ -66,7 +56,7 @@ const Sessions = () => {
           <div style={{ "display": "flex", "alignItems": "center", "gap": "10px", "fontSize": "1.5rem" }} >
             <h2>Create new</h2>
             <form onSubmit={onSubmit} className={styles.webflowStyleInput}>
-              <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+              <input type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={30}/>
               <button type="submit"><IoIosArrowRoundForward /></button>
             </form>
           </div>
@@ -76,7 +66,7 @@ const Sessions = () => {
         ?
         <div>
           {/* </form> */}
-          <h2 style={{ "fontSize": "2rem", "textAlign": "center" }}>My sessions</h2>
+          <h2 style={{ "fontSize": "2rem", "textAlign": "left" }}>My sessions</h2>
           <div className={styles.sessions}>
             {sessions.filter(s => s.user.id === user.id).map(session => (
               <div key={session.name} className={styles.session}>
@@ -87,7 +77,7 @@ const Sessions = () => {
               </div>
             ))}
           </div>
-          <h2 style={{ "fontSize": "2rem", "textAlign": "center" }}>Others sessions</h2>
+          <h2 style={{ "fontSize": "2rem", "textAlign": "left" }}>Others sessions</h2>
           <div className={styles.sessions}>
             {sessions.filter(s => s.user.id !== user.id).map(session => (
               <div key={session.name} className={styles.session}>

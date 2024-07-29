@@ -29,12 +29,12 @@ loginRouter.post("/", async (request, response) => {
 
   response
     .status(200)
-    .send({ token, username: user.username, name: user.name, id: user.id });
+    .send({ token, username: user.username, name: user.name, id: user.id, savedQuizzes: user.savedQuizzes });
 });
 
 loginRouter.post("/valid", async (request, response) => {
   const user = request.user;
-  return user ? response.status(200).json({isValid: true}) : response.status(200).json({isValid: false});
+  return user ? response.status(200).json({ isValid: true }) : response.status(200).json({ isValid: false });
 });
 
 module.exports = loginRouter;

@@ -107,6 +107,14 @@ const deleteUser = async id => {
   return req;
 };
 
+const saveQuiz = async (userId, quizId) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const req = await axios.put(`${userUrl}/${userId}/save-quiz`, { quizId }, config);
+  return req.data;
+};
+
 const login = async credentials => {
   const req = await axios.post(loginUrl, credentials);
   return req.data;
@@ -116,12 +124,12 @@ const tokenValid = async token => {
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };
-  const req = await axios.post(`${loginUrl}/valid`, token, config)
+  const req = await axios.post(`${loginUrl}/valid`, token, config);
   return req.data;
-}
+};
 
 export default {
   setToken, getQuizzes, createQuiz, updateQuiz, deleteQuiz,
   getSessions, getSession, createSession, deleteSession,
-  updateSession, createUser, deleteUser, login, tokenValid
+  updateSession, createUser, deleteUser, saveQuiz, login, tokenValid
 };

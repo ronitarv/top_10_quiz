@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import quizService from "../services/quizzes";
 import { deleteQuiz } from "../reducers/quizReducer";
 import styles from "../css/Quizzes.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { FaHeart } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
+import { setUser } from "../reducers/userReducer";
 
 
 const Quizzes = ({ handleSelect }) => {
@@ -12,6 +15,10 @@ const Quizzes = ({ handleSelect }) => {
   const user = useSelector(state => state.user);
   const [deletableQuiz, setDeletableQuiz] = useState(null);
   const dialogRef = useRef();
+
+  useEffect(() => {
+    window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
+  }, [user]);
 
   const onRemoveQuiz = (quiz) => {
     setDeletableQuiz(quiz);
@@ -29,6 +36,16 @@ const Quizzes = ({ handleSelect }) => {
     quizService.deleteQuiz(deletableQuiz.id).then(() => {
       dispatch(deleteQuiz(deletableQuiz.id));
     });
+  };
+
+  const saveQuiz = (quizId) => {
+    if (user.savedQuizzes.includes(quizId)) {
+      dispatch(setUser({ ...user, savedQuizzes: user.savedQuizzes.filter(q => q !== quizId) }));
+    } else {
+      dispatch(setUser({ ...user, savedQuizzes: user.savedQuizzes.concat(quizId) }));
+    }
+    window.localStorage.setItem("top10QuizAppUser", JSON.stringify(user));
+    quizService.saveQuiz(user.id, quizId);
   };
 
   return (
@@ -59,7 +76,31 @@ const Quizzes = ({ handleSelect }) => {
                     </ol>}
                   </button>
                   <div className={styles.optionButtons}>
-                    <button onClick={() => onRemoveQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link>
+                    <button onClick={() => onRemoveQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link>{user.savedQuizzes.includes(quiz.id) ? <FaHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/> : <FaRegHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
+          <details open>
+            <summary>Saved quizzes</summary>
+            <div className={styles.quizzes}>
+              {quizzes.filter(q => user.savedQuizzes.includes(q.id)).map(quiz => (
+                <div key={quiz.question} className={styles.quiz}>
+                  <button className={styles.select} onClick={handleSelect ? () => handleSelect(quiz) : null}>
+                    <div>
+                      <h2 style={{ "marginBottom": "0px" }}>{quiz.question}</h2>
+                      <div style={{ "fontSize": "1.5rem" }}>by {quiz.user.username}</div>
+                    </div>
+                    {quiz.answers &&
+                    <ol>
+                      {quiz.answers.map((answer, index) => (
+                        <li key={index + answer}>{answer}</li>
+                      ))}
+                    </ol>}
+                  </button>
+                  <div className={styles.optionButtons}>
+                    {quiz.user.id === user.id && <span><button onClick={() => onRemoveQuiz(quiz)}>remove</button><Link to={`/quizzes/update/${quiz.id}`}><button>update</button></Link></span>}{user.savedQuizzes.includes(quiz.id) ? <FaHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/> : <FaRegHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/>}
                   </div>
                 </div>
               ))}
@@ -71,7 +112,10 @@ const Quizzes = ({ handleSelect }) => {
               {quizzes.filter(q => q.user.id !== user.id).map(quiz => (
                 <div key={quiz.question} className={styles.quiz}>
                   <button className={styles.select} onClick={handleSelect ? () => handleSelect(quiz) : null}>
-                    <h2>{quiz.question}</h2>
+                    <div>
+                      <h2 style={{ "marginBottom": "0px" }}>{quiz.question}</h2>
+                      <div style={{ "fontSize": "1.5rem" }}>by {quiz.user.username}</div>
+                    </div>
                     {quiz.answers &&
                   <ol>
                     {quiz.answers.map((answer, index) => (
@@ -79,6 +123,9 @@ const Quizzes = ({ handleSelect }) => {
                     ))}
                   </ol>}
                   </button>
+                  <div className={styles.optionButtons}>
+                    {user.savedQuizzes.includes(quiz.id) ? <FaHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/> : <FaRegHeart className={styles.saveIcon} onClick={() => saveQuiz(quiz.id)}/>}
+                  </div>
                 </div>
               ))}
             </div>

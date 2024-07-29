@@ -74,23 +74,23 @@ const App = () => {
     if (userJson) {
       const user = JSON.parse(userJson);
       quizService.tokenValid(user.token)
-      .then(({isValid}) => {
-        if (isValid) {
-          dispatch(setUser(user));
-          quizService.setToken(user.token);
-        } else if (role === "host") {
-          navigate("/signin")
-        }
-      })
+        .then(({ isValid }) => {
+          if (isValid) {
+            dispatch(setUser(user));
+            quizService.setToken(user.token);
+          } else if (role === "host") {
+            navigate("/signin");
+          }
+        });
     }
-  }, [role])
+  }, [role]);
 
-  
+
 
   const cancelDeleteUser = () => {
     dialogRef.current?.close();
     setConfirmText("");
-  }
+  };
 
 
 
@@ -98,7 +98,7 @@ const App = () => {
     setConfirmText("");
     quizService.deleteUser(user.id).then(() => {
       handleLogout();
-    })
+    });
   };
 
   if (!role) {
@@ -120,11 +120,11 @@ const App = () => {
         <input type="text" value={confirmText} onChange={e => setConfirmText(e.target.value)} />
         <div className={styles.buttons}>
           <button style={{ "backgroundColor": "#8388a4", "color": "black" }} onClick={cancelDeleteUser}>Cancel</button>
-          <button style={{ backgroundColor: confirmText === `sudo delete user ${user?.username}` ? "#ed5e68" : "#eaeaea", color: "white" }} 
-                  onClick={confirmText === `sudo delete user ${user?.username}` ? deleteUser : null}>
+          <button style={{ backgroundColor: confirmText === `sudo delete user ${user?.username}` ? "#ed5e68" : "#eaeaea", color: "white" }}
+            onClick={confirmText === `sudo delete user ${user?.username}` ? deleteUser : null}>
             Delete
           </button>
-          </div>
+        </div>
       </dialog>
       <ReactNotifications />
       <div className={styles.navbar}>
