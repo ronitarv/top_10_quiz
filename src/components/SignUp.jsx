@@ -47,8 +47,8 @@ const Signup = () => {
       <h2>Sign up</h2>
       <div className={styles.container}>
         <form onSubmit={onSignup}>
-          <div><input type="text" placeholder="username" value={username} onChange={(event) => setUsername(event.target.value)} /></div>
-          <div style={{ "verticalAlign": "middle" }}><input type={passwordVisible ? "text" : "password"} placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /><BiSolidShow style={{ "fontSize": "50px", "position": "relative", "marginLeft":  "-50px", "top": "21px", "left": "-20px", "zIndex": "2" }} onClick={() => setPasswordVisible(!passwordVisible)} /></div>
+          <div><input type="text" placeholder="username" value={username} maxLength={20} onChange={(event) => setUsername(event.target.value)} /></div>
+          <div style={{ "verticalAlign": "middle" }}><input type={passwordVisible ? "text" : "password"} placeholder="password" value={password} maxLength={40} onChange={(event) => setPassword(event.target.value)} /><BiSolidShow style={{ "fontSize": "50px", "position": "relative", "marginLeft":  "-50px", "top": "21px", "left": "-20px", "zIndex": "2" }} onClick={() => setPasswordVisible(!passwordVisible)} /></div>
           <button style={{ "marginBottom": "20px" }}type="submit">sign up</button>
         </form>
       </div>

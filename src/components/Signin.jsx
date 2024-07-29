@@ -35,8 +35,8 @@ const Signin = () => {
       <h2>Sign in</h2>
       <div className={styles.container}>
         <form onSubmit={handleLogin}>
-          <div><input type="text" placeholder="username" value={username} onChange={(event) => setUsername(event.target.value)} /></div>
-          <div><input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} /></div>
+          <div><input type="text" placeholder="username" value={username} maxLength={20} onChange={(event) => setUsername(event.target.value)} /></div>
+          <div><input type="password" placeholder="password" value={password} maxLength={40} onChange={(event) => setPassword(event.target.value)} /></div>
           <button type="submit">sign in</button>
         </form>
         <div style={{ "paddingTop": "2rem", "fontSize": "2.5rem", "textDecoration": "none" }}>No account? <Link style={{ "textDecoration": "none", color: "#0000FF" }}to="/signup">Sign up</Link></div>
